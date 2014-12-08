@@ -130,6 +130,11 @@ example, we could round the values to make them easier to read.
 
     SELECT plot, species, sex, wgt, ROUND(wgt / 1000.0, 2) FROM surveys;
 
+The column name from this calculated value is simply the code needed to get there 
+(i.e. ``ROUND(wgt / 1000.0, 2)``. If you want to re-name the column something else, use ``AS`` 
+
+    SELECT plot, species, sex, wgt, ROUND(wgt / 1000.0, 2) AS wgtkg FROM surveys;
+	
 ***EXERCISE: Write a query that returns
              The year, month, day, speciesID and weight in mg***
 
