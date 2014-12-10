@@ -233,7 +233,7 @@ Another note for ordering. We don’t actually have to display a column to sort 
 it.  For example, let’s say we want to order by the species ID, but we only want
 to see genus and species.
 
-    SELECT genus, species FROM species ORDER BY taxon ASC;
+    SELECT genus, species FROM species ORDER BY taxa ASC;
 
 We can do this because sorting occurs earlier in the computational pipeline than
 field selection.
