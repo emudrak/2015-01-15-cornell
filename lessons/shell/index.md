@@ -18,8 +18,6 @@ so that they don't have to type the same things over and over again.
 3.  [Creating Things](02-create.html)
 4.  [Pipes and Filters](03-pipefilter.html)
 5.  [Loops](04-loop.html)
-6.  [Shell Scripts](05-script.html)
-7.  [Finding Things](06-find.html)
-8.  [Command Line Programming](07-cmdline.html)
+6.  [Command Line Programming](07-cmdline.html)
 
 </div>
