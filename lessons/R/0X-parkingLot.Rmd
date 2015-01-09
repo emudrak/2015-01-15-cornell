@@ -1,0 +1,426 @@
+---
+layout: topic
+title: Before we start
+minutes: 15
+---
+
+
+
+In our survey dataset, the species are represented by a 2-letter code (e.g.,
+"AB"), however, we would like to include the species name. The correspondance
+between the 2 letter code and the names are in the file `species.csv`. In this
+file, one column includes the genus and another includes the species. First, we
+are going to import this file in memory:
+
+```{r, echo=FALSE, purl=FALSE}
+species <- read.csv("../../data/biology/species.csv")
+```
+
+```{r, eval=FALSE, purl=TRUE}
+species <- read.csv("data/species.csv")
+```
+
+We are then going to use the function `match()` to create a vector that contains
+the genus names for all our observations. The function `match()` takes at least
+2 arguments: the values to be matched (in our case the 2 letter code from the
+`surveys` data frame held in the column `species`), and the table that contains
+the values to be matched against (in our case the 2 letter code in the `species`
+data frame held in the column `species_id`). The function returns the position
+of the matches in the table, and this can be used to retrieve the genus names:
+
+```{r, purl=TRUE}
+surveys_spid_index <- match(surveys$species, species$species_id)
+surveys_genera <- species$genus[surveys_spid_index]
+```
+
+Now that we have our vector of genus names, we can add it as a new column to our
+`surveys` object:
+
+```{r, purl=TRUE}
+surveys <- cbind(surveys, genus=surveys_genera)
+```
+
+### Challenge
+
+Use the same approach to also include the species names in the `surveys` data
+frame.
+
+```{r, echo=FALSE, purl=TRUE}
+## Use the same approach to also include the species names in the
+## `surveys` data frame.
+```
+
+
+```{r, echo=FALSE, purl=FALSE}
+surveys_species <- species$species[surveys_spid_index]
+surveys <- cbind(surveys, species_name=surveys_species)
+```
+
+```{r, results='show'}
+## and check out the result
+head(surveys)
+```
+
+
+The function `str()` provides an overview of the object and the elements it
+contains. It is a really useful function when working with large and complex
+objects:
+
+
+
+### Converting factors
+
+If you need to convert a factor to a character vector, simply use
+`as.character(x)`.
+
+Converting a factor to a numeric vector is however a little trickier, and you
+have to go via a character vector. Compare:
+
+```{r, purl=TRUE}
+f <- factor(c(1, 5, 10, 2))
+as.numeric(f)               ## wrong! and there is no warning...
+as.numeric(as.character(f)) ## works...
+as.numeric(levels(f))[f]    ## The recommended way.
+```
+
+
+
+### Challenge
+
+The function `table()` tabulates observations and can be used to create
+bar plots quickly. For instance:
+
+```{r, results='show', purl=TRUE}
+## Question: How can you recreate this plot but by having "control"
+## being listed last instead of first?
+exprmt <- factor(c("treat1", "treat2", "treat1", "treat3", "treat1", "control",
+                   "treat1", "treat2", "treat3"))
+table(exprmt)
+barplot(table(exprmt))
+```
+
+<!---
+```{r, purl=FALSE}
+exprmt <- factor(exprmt, levels=c("treat1", "treat2", "treat3", "control"))
+barplot(table(exprmt))
+```
+--->
+
+By default, `data.frame` converts (= coerces) columns that contain characters
+(i.e., text) into the `factor` data type. Depending on what you want to do with
+the data, you may want to keep these columns as `character`. To do so,
+`read.csv()` and `read.table()` have an argument called `stringsAsFactors` which
+can be set to `FALSE`:
+
+```{r, eval=FALSE, purl=FALSE}
+some_data <- read.csv("data/some_file.csv", stringsAsFactors=FALSE)
+```
+
+<!--- talk about colClasses argument?, row names?  --->
+
+You can also create `data.frame` manually with the function `data.frame()`. This
+function can also take the argument `stringsAsFactors`. Compare the output of
+these examples:
+
+```{r, results='show', purl=TRUE}
+example_data <- data.frame(animal=c("dog", "cat", "sea cucumber", "sea urchin"),
+                           feel=c("furry", "furry", "squishy", "spiny"),
+                           weight=c(45, 8, 1.1, 0.8))
+str(example_data)
+example_data <- data.frame(animal=c("dog", "cat", "sea cucumber", "sea urchin"),
+                           feel=c("furry", "furry", "squishy", "spiny"),
+                           weight=c(45, 8, 1.1, 0.8), stringsAsFactors=FALSE)
+str(example_data)
+```
+
+__Point to the differences between character and factor output with str()__
+
+
+### Challenge
+
+1. There are a few mistakes in this hand crafted `data.frame`, can you spot and
+fix them? Don't hesitate to experiment!
+
+   ```{r, eval=FALSE, purl=TRUE}
+   ##  There are a few mistakes in this hand crafted `data.frame`,
+   ##  can you spot and fix them? Don't hesitate to experiment!
+   author_book <- data.frame(author_first=c("Charles", "Ernst", "Theodosius"),
+                                author_last=c(Darwin, Mayr, Dobzhansky),
+                                year=c(1942, 1970))
+   ```
+
+1. Can you predict the class for each of the columns in the following example?
+
+   ```{r, purl=TRUE}
+   ## Can you predict the class for each of the columns in the following example?
+   ## Check your guesses using `str(country_climate)`. Are they what you expected?
+   ##  Why? why not?
+   country_climate <- data.frame(country=c("Canada", "Panama", "South Africa", "Australia"),
+                                  climate=c("cold", "hot", "temperate", "hot/temperate"),
+                                  temperature=c(10, 30, 18, "15"),
+                                  north_hemisphere=c(TRUE, TRUE, FALSE, "FALSE"),
+                                  has_kangaroo=c(FALSE, FALSE, FALSE, 1))
+   ```
+
+   Check your guesses using `str(country_climate)`. Are they what you expected?
+   Why? Why not? Check your gueses using `str(country_climate)`. Are they what you expected?
+   Why? Why not?
+
+
+
+
+```{r, echo=FALSE, purl=FALSE}
+knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
+```
+## The R syntax
+
+_Start by showing an example of a script_
+
+* Point to the different parts:
+  - a function
+  - the assignment operator `<-`
+  - the `=` for arguments
+  - the comments `#` and how they are used to document function and its content
+  - the `$` operator
+* Point to indentation and consistency in spacing to improve clarity
+
+![Example of a simple R script](img/r_starting_example_script.png)
+
+
+
+## Commenting
+
+Use `#` signs to comment. Comment liberally in your R scripts. Anything to the
+right of a `#` is ignored by R.
+
+## Assignment operator
+
+`<-` is the assignment operator. Assigns values on the right to objects on the
+left, it is like an arrow that points from the value to the object. Mostly
+similar to `=` but not always. Learn to use `<-` as it is good programming
+practice. Using `=` in place of `<-` can lead to issues down the line.
+
+In RStudio, typing `Alt + -` (push `Alt`, the key next to your space bar at the
+same time as the `-` key) will write ` <- ` in a single keystroke.
+
+`=` should only be used to specify the values of arguments in functions for
+instance `read.csv(file="data/some_data.csv")`.
+
+## Allowable object names
+Objects can be given any name such as `x`, `current_temperature`, or
+`subject_id`. You want your object names to be explicit and not too long. They
+cannot start with a number (`2x` is not valid but `x2` is). R is case sensitive
+(e.g., `weight_kg` is different from `Weight_kg`). There are some names that
+cannot be used because they represent the names of fundamental functions in R
+(e.g., `if`, `else`, `for`, see
+[here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+for a complete list). In general, even if it's allowed, it's best to not use
+other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). In doubt
+check the help to see if the name is already in use. It's also best to avoid
+dots (`.`) within a variable name as in `my.dataset`. It is also recommended to
+use nouns for variable names, and verbs for function names.
+
+## Functions and their arguments
+
+Let's look at a simple function call:
+
+```{r, eval=FALSE}
+surveys <- read.csv(file="data/surveys.csv")
+```
+
+The `file=` part inside the parentheses is called an argument, and most
+functions use arguments. Arguments modify the behavior of the
+function. Typically, they take some input (e.g., some data, an object) and other
+options to change what the function will return, or how to treat the data
+provided.
+
+Most functions can take several arguments, but most are specified by default so
+you don't have to enter them. To see these default values, you can either type
+`args(read.csv)` or look at the help for this function (e.g., `?read.csv`).
+
+```{r, results='show'}
+args(read.csv)
+```
+
+If you provide the arguments in the exact same order as they are defined you
+don't have to name them:
+
+```{r, eval=FALSE}
+read.csv(file="data/surveys.csv", header=TRUE) # is identical to:
+read.csv("data/surveys.csv", TRUE)
+```
+
+However, it's usually not recommended practice because it's a lot of remembering
+to do, and if you share your code with others that includes less known functions
+it makes your code difficult to read. (It's however OK to not include the names
+of the arguments for basic functions like `mean`, `min`, etc...)
+
+Another advantage of naming arguments, is that the order doesn't matter:
+
+```{r, eval=FALSE}
+read.csv(file="data/surveys.csv", header=TRUE) # is identical to:
+read.csv(header=TRUE, file="data/surveys.csv")
+```
+
+
+## Good practices
+
+There are two main ways of interacting with R: using the console or by using
+script files (plain text files that contain your code).
+
+The recommended approach when working on a data analysis project is dubbed "the
+source code is real". The objects you are creating should be seen as disposable
+as they are the direct realization of your code. Every object in your analysis
+can be recreated from your code, and all steps are documented. Therefore, it is
+best to enter as little commands as possible in the R console. Instead, all code
+should be written in script files, and evaluated from there. That is where
+RStudio is really useful as it makes the passing of code between your script and
+the R console easy. The R console should be used to inspect objects, test a
+function or get help. With this approach, the `.Rhistory` file automatically
+created during your session should not be very useful.
+
+Similarly, you should separate the original data (raw data) from intermediate
+datasets that you may create for the need of a particular analysis. For
+instance, you may want to create a `data/` directory within your working
+directory that stores the raw data, and have a `data_output/` directory for
+intermediate datasets and a `figure_output/` directory for the plots you will
+generate.
+
+## Seeking help
+
+### I know the name of the function I want to use, but I'm not sure how to use it
+
+If you need help with a specific function, let's say `barplot()`, you can type:
+
+```{r, eval=FALSE}
+?barplot
+```
+
+If you just need to remind yourself of the names of the arguments, you can use:
+
+```{r, eval=FALSE}
+args(lm)
+```
+
+If the function is part of a package that is installed on your computer but
+don't remember which one, you can type:
+
+```{r, eval=FALSE}
+??geom_point
+```
+
+### I want to use a function that does X, there must be a function or it but I don't know which one...
+
+If you are looking for a function to do a particular task, you can use
+`help.search()` (but only looks through the installed packages):
+
+```{r, eval=FALSE}
+help.search("kruskal")
+```
+
+If you can't find what you are looking for, you can use the
+[rdocumention.org](http://www.rdocumentation.org) website that search through
+the help files across all packages available.
+
+### I am stuck... I get an error message that I don't understand
+
+Start by googling the error message. However, this doesn't always work very well
+because often, package developers rely on the error catching provided by R. You
+end up with general error messages that might not be very helpful to diagnose a
+problem (e.g. "subscript out of bounds").
+
+However, you should check stackoverflow. Search using the `[r]` tag. Most
+questions have already been answered, but the challenge is to use the right
+words in the search to find the answers:
+[http://stackoverflow.com/questions/tagged/r](http://stackoverflow.com/questions/tagged/r)
+
+The [Introduction to R](http://cran.r-project.org/doc/manuals/R-intro.pdf) can
+also be dense for people with little programming experience but it is a good
+place to understand the underpinnings of the R language.
+
+The [R FAQ](http://cran.r-project.org/doc/FAQ/R-FAQ.html) is dense and technical
+but it is full of useful information.
+
+### Asking for help
+
+The key to get help from someone is for them to grasp your problem rapidly. You
+should make it as easy as possible to pinpoint where the issue might be.
+
+Try to use the correct words to describe your problem. For instance, a package
+is not the same thing as a library. Most people will understand what you meant,
+but others have really strong feelings about the difference in meaning. The key
+point is that it can make things confusing for people trying to help you. Be as
+precise as possible when describing your problem
+
+If possible, try to reduce what doesn't work to a simple reproducible
+example. If you can reproduce the problem using a very small `data.frame`
+instead of your 50,000 rows and 10,000 columns one, provide the small one with
+the description of your problem. When appropriate, try to generalize what you
+are doing so even people who are not in your field can understand the question.
+
+To share an object with someone else, if it's relatively small, you can use the
+function `dput()`, it will output R code that can be used to recreate the exact same
+object as the one in memory:
+
+```{r, results='show'}
+dput(head(iris)) # iris is an example data.frame that comes with R
+```
+
+If the object is larger, provide either the raw file (i.e., your CSV file) with
+your script up to the point of the error (and after removing everything that is
+not relevant to your issue). Alternatively, in particular if your questions is
+not related to a `data.frame`, you can save any R object to a file:
+
+```{r, eval=FALSE}
+saveRDS(iris, file="/tmp/iris.rds")
+```
+
+The content of this file is however not human readable and cannot be posted
+directly on stackoverflow. It can how be sent to someone by email who can read
+it with this command:
+
+```{r, eval=FALSE}
+some_data <- readRDS(file="~/Downloads/iris.rds")
+```
+
+Last, but certainly not least, **always include the output of `sessionInfo()`**
+as it provides critical information about your platform, the versions of R and
+the packages that you are using, and other information that can be very helpful
+to understand your problem.
+
+```{r, results='show'}
+sessionInfo()
+```
+
+### Where to ask for help?
+
+* Your friendly colleagues: if you know someone with more experience than you,
+  they might be able and willing to help you.
+* Stackoverlow: if your question hasn't been answered before and is well
+  crafted, chances are you will get an answer in less than 5 min.
+* The [R-help](https://stat.ethz.ch/mailman/listinfo/r-help): it is read by a
+  lot of people (including most of the R core team), a lot of people post to it,
+  but the tone can be pretty dry, and it is not always very welcoming to new
+  users. If your question is valid, you are likely to get an answer very fast
+  but don't expect that it will come with smiley faces. Also, here more than
+  everywhere else, be sure to use correct vocabulary (otherwise you might get an
+  answer pointing to the misuse of your words rather than answering your
+  question). You will also have more success if your question is about a base
+  function rather than a specific package.
+* If your question is about a specific package, see if there is a mailing list
+  for it. Usually it's included in the DESCRIPTION file of the package that can
+  be accessed using `packageDescription("name-of-package")`. You may also want
+  to try to email the author of the package directly.
+* There are also some topic-specific mailing lists (GIS, phylogenetics, etc...),
+  the complete list is [here](http://www.r-project.org/mail.html).
+
+### More resources
+
+* The [Posting Guide](http://www.r-project.org/posting-guide.html) for the R
+  mailing lists.
+* [How to ask for R help](http://blog.revolutionanalytics.com/2014/01/how-to-ask-for-r-help.html)
+  useful guidelines
+  
+### FRANCOISE WANTS
+reading in data from excel tabs- add a bit on this. 
+

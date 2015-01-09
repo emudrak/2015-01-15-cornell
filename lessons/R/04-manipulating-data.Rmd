@@ -4,8 +4,8 @@ title: Manipulating data
 minutes: 45
 ---
 
-```{r, echo=FALSE, purl=FALSE}
-knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
+```{r, echo=FALSE, purl=FALSE, results='hide'}
+knitr::opts_chunk$set(fig.path='img/r-lesson-', comment=NA)
 surveys <- read.csv(file="../../data/biology/surveys.csv")
 ```
 
@@ -17,11 +17,6 @@ surveys <- read.csv(file="../../data/biology/surveys.csv")
 
 
 # Subsetting data
-
-```{r, echo=FALSE, purl=TRUE}
-## subsetting data
-```
-
 In particular for larger datasets, it can be tricky to remember the column
 number that corresponds to a particular variable. (Are species names in column 5
 or 7? oh, right... they are in column 6). In some cases, in which column the
@@ -49,136 +44,72 @@ the animals of the species "DO":
 surveys_DO <- subset(surveys, species == "DO")
 ```
 
+`subset()` is a function in "base R" which means that it comes automatically when you install R. Functions in R have a name, and then take arguments in parentheses. Type  `?subset` to call up the help for the subset function. You'll see some examples of useage, and then you'll see a listing of Arguments that `subset()` can take.  
+
+The first argument, `x` is the object to be subsetted, in our case the data frame `surveys`. The second is `subset`, which the help tells us is a logical expression.  We put in here `species=="DO"`, which is a condition that tests for the column `species` to be equal to "DO." The third argument is `select`, which tells the columns to select from the data frame. If we leave it blank, the function will return all columns. 
+
+In R, a test for "equals"" is two equal signs, because we use a single equal sign for assignment sometimes. Here are some other operators that R uses: 
+
+|Operator  |  Description|
+:---------:|---------------
+|< 	       |less than
+|<= 	     |less than or equal to
+|> 	       |greater than
+|>= 	     |greater than or equal to
+|== 	     |exactly equal to
+|!= 	     |not equal to
+|!x 	     |Not x
+|x \| y    |	x OR y
+|x & y 	   |x AND y
+|isTRUE(x) |test if X is TRUE 
+
 ### Challenge
 
-1. What does the following do?
+1. Use subset() to print data collected since 1990. 
+2. How many animals were male and of species "PE"?
+3. How many individuals of the species "DM" or "SS"?
+4. What value is returned by `surveys_DO$month[2]` (guess before you execute!)
 
-  ```{r, echo=FALSE, purl=TRUE}
-  ## What does the following do? (Try to guess without executing it)
-  ## surveys_DO$month[2] <- 8
-  ```
 
-1. Use the function `subset` twice to create a `data.frame` that contains all
-individuals of the species "DM" that were collected in 2002.
-  * How many individuals of the species "DM" were collected in 2002?
 
-  ```{r, echo=FALSE, purl=TRUE}
-  ##  Use the function `subset` twice to create a `data.frame` that
-  ##  contains all individuals of the species "DM" that were collected
-  ##  in 2002.
-  ##   * How many individuals of the species "DM" were collected in 2002?
-  ```
+```{r, echo=FALSE, purl=TRUE, results='hide'}
+  subset(surveys, year>1990)
+  nrow(subset(surveys, sex=="M" & species=="PE"))
+  nrow(subset(surveys, species=="DM" | species=="SS"))
+  surveys$month[2]
+
+```
 
 ## Adding a column to our dataset
 
-```{r, echo=FALSE, purl=TRUE}
-## Adding columns
-```
-
 Sometimes, you may have to add a new column to your dataset that represents a
-new variable. You can add columns to a `data.frame` using the function `cbind()`
-(__c__olumn __bind__). Beware, the additional column must have the same number
-of elements as there are rows in the `data.frame`.
+new variable. The easiest way to do this is to use the `$` symbol before a column name that doesn't exist yet
+```{r add new column}
+surveys$logwgt <- log(surveys$wgt)
 
-In our survey dataset, the species are represented by a 2-letter code (e.g.,
-"AB"), however, we would like to include the species name. The correspondance
-between the 2 letter code and the names are in the file `species.csv`. In this
-file, one column includes the genus and another includes the species. First, we
-are going to import this file in memory:
+```
+Look at the data set now (use the grid icon in the Environment tab). There is a new column, and the values are equal to the log of the values in the wgt column. 
 
-```{r, echo=FALSE, purl=FALSE}
-species <- read.csv("../../data/biology/species.csv")
+If you assign values to a column that doesn't exist yet, R will create a new column with those values. **Careful:**  If you had typed `surveys$wgt <- log(surveys$wgt)` you would have overwritted the original column. 
+
+
+Look at the data frame structure again: 
+
+```{r}
+str(surveys)
 ```
 
-```{r, eval=FALSE, purl=TRUE}
-species <- read.csv("data/species.csv")
+The type for "plot" is integer. But the plots could have been labeled with a lettering scheme rather than numbers.  Here, plot is just a label, and the concept that plot 4 is twice that of plot 2 is false. So we should really make it a factor. 
+
+```{r}
+surveys$plot <- as.factor(surveys$plot)
 ```
 
-We are then going to use the function `match()` to create a vector that contains
-the genus names for all our observations. The function `match()` takes at least
-2 arguments: the values to be matched (in our case the 2 letter code from the
-`surveys` data frame held in the column `species`), and the table that contains
-the values to be matched against (in our case the 2 letter code in the `species`
-data frame held in the column `species_id`). The function returns the position
-of the matches in the table, and this can be used to retrieve the genus names:
+Look at the structure of `surveys`. Now, plot is a factor with 24 levels. To us, that line of code changed the data type from `int` to `Factor. 
 
-```{r, purl=TRUE}
-surveys_spid_index <- match(surveys$species, species$species_id)
-surveys_genera <- species$genus[surveys_spid_index]
-```
+What actually happened was that R evaluated the code on the right of the ` <- ` (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the ` <- `, whcih already existed, so it overwrote the values.  That is ok in this case. 
 
-Now that we have our vector of genus names, we can add it as a new column to our
-`surveys` object:
-
-```{r, purl=TRUE}
-surveys <- cbind(surveys, genus=surveys_genera)
-```
-
-### Challenge
-
-Use the same approach to also include the species names in the `surveys` data
-frame.
-
-```{r, echo=FALSE, purl=TRUE}
-## Use the same approach to also include the species names in the
-## `surveys` data frame.
-```
-
-
-```{r, echo=FALSE, purl=FALSE}
-surveys_species <- species$species[surveys_spid_index]
-surveys <- cbind(surveys, species_name=surveys_species)
-```
-
-```{r, results='show'}
-## and check out the result
-head(surveys)
-```
-
-<!--- should we cover merge()? --->
-
-# Adding rows
-
-<!--- Even if this is not optimal, using this approach requires to cover less   -->
-<!--- material such as logical operations on vectors. Depending on how fast the -->
-<!--- group moves, it might be better to show the correct way.                  -->
-
-```{r, echo=FALSE, purl=TRUE}
-## Adding rows
-```
-
-Let's create a `data.frame` that contains the information only for the species
-"DO" and "DM". We know how to create the data set for each species with the
-function `subset()`:
-
-```{r, purl=FALSE}
-surveys_DO <- subset(surveys, species == "DO")
-surveys_DM <- subset(surveys, species == "DM")
-```
-
-Similarly to `cbind()` for columns, there is a function `rbind()` (__r__ow
-__bind__) that puts together two `data.frame`. With `rbind()` the number of
-columns and their names must be identical between the two objects:
-
-```{r, purl=FALSE}
-surveys_DO_DM <- rbind(surveys_DO, surveys_DM)
-```
-
-### Challenge
-
-Using a similar approach, construct a new `data.frame` that only includes data
-for the years 2000 and 2001.
-
-```{r, echo=FALSE, purl=TRUE}
-## How many columns are now in (1) the `data.frame` `surveys`, (2) the `data.frame`
-## `surveys_index`?
-```
-
-# Removing columns
-
-```{r, echo=FALSE, purl=FALSE}
 ## Removing columns
-```
 
 Just like you can select columns by their positions in the `data.frame` or by
 their names, you can remove them similarly.
@@ -201,11 +132,7 @@ surveys_noDate2 <- subset(surveys, select=-c(month, day, year))
 colnames(surveys_noDate2)
 ```
 
-# Removing rows
-
-```{r, echo=FALSE, purl=FALSE}
 ## Removing rows
-```
 
 Typically rows are not associated with names, so to remove them from the
 `data.frame`, you can do:
@@ -213,3 +140,76 @@ Typically rows are not associated with names, so to remove them from the
 ```{r, results='show', purl=FALSE}
 surveys_missingRows <- surveys[-c(10, 50:70), ] # removing rows 10, and 50 to 70
 ```
+
+
+<!----
+# Building data frames from existing ones  Skip?? 
+
+You can stack data frames next to each other using `cbind()` (__c__olumn __bind__) and on top of each other using `rbind` (__r__ow __bind__).
+
+To illustrate this, let's use some smaller data frames.  You can create data frames directly in R
+
+```{r}
+
+land_animals <- data.frame(animal=c("dog", "cat", "bunny", "snake"),
+                           feel=c("furry", "furry", "fluffy", "smooth"),
+                           weight=c(45, 8, 5.5, 1.2))
+                           
+sea_animals <- data.frame(animal=c("fish", "sea cucumber", "sea urchin"),
+                           feel=c("smooth", "squishy", "spiny"),
+                           weight=c( 8, 1.1, 0.8))
+
+more_info <- data.frame(legs=c(4,4,4,0,0,0,0), eyes=c(2,2,2,2,2,0,0))
+
+```
+
+```{r, results="show"}
+
+land_animals
+sea_animals
+more_info
+
+```
+
+
+With `rbind()` the number of columns and their names must be identical between the two objects:
+```{r rbind}
+all_animals <- rbind(land_animals, sea_animals)
+all_animals
+```
+
+If not, you get an error: 
+```{r, error=TRUE}
+
+rbind(land_animals, more_info)
+
+```
+
+
+With `cbind()` additional columns must have the same number
+of elements as there are rows in the `data.frame`.
+
+```{r }
+all_animals <- cbind(all_animals, more_info)
+all_animals
+```
+
+####TALK ABOUT RECYCLING???
+**Danger** if you don't have matching number of rows when doing cbind, R tries to "recycle" if the length of the longer object is a multiple of the shorter one.   Here, we try to cbind `sea_animals` (with 3 elements) with more_info with the first row removed so it has 6 elements.  Since 6 is a multiple of 3, R will recycle values in a way to make it "work out:"
+```{r}
+
+cbind(sea_animals, more_info[-1,])
+
+```
+
+So R wrote out the `sea_animals` twice to allow all 6 elements of `more_info` to fit in the data.frame.  This could be very bad if you're not aware of it. 
+
+If the longer object is *not* a multiple of the shorter one, R will return an error: 
+
+```{r, error=TRUE}
+
+cbind(land_animals, more_info)
+
+```
+
+ --->

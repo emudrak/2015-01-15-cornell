@@ -5,7 +5,7 @@ minutes: 60
 ---
 
 ```{r, echo=FALSE, purl=FALSE}
-knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
+knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-', comment=NA)
 surveys <- read.csv(file="../../data/biology/surveys.csv")
 ```
 
@@ -19,10 +19,6 @@ surveys <- read.csv(file="../../data/biology/surveys.csv")
 
 
 # Calculating statistics
-
-```{r, echo=FALSE, purl=FALSE}
-## Calculating statistics
-```
 
 Let's get a closer look at our data. For instance, we might want to know how
 many animals we trapped in each plot, or how many of each species were caught.
@@ -41,7 +37,7 @@ table(surveys$species)
 ```
 
 R has a lot of built in statistical functions, like `mean()`, `median()`,
-`max()`, `min()`. Let's start by calculating the average weight of all the
+`max()`, `min()`, `var()`, `sd()`. Let's start by calculating the average weight of all the
 animals using the function `mean()`:
 
 ```{r, results='show', purl=FALSE}
@@ -75,17 +71,55 @@ observation:
 
 ```{r, purl=FALSE}
 surveys_complete <- surveys[complete.cases(surveys), ]
+
 ```
 
-<!--- need to cover negation, and vector operations for this...
-If you want to remove only the observations that are missing data for one
-variable, you can use the function `is.na()`. For instance, to create a new
-dataset that only contains individuals that have been weighted:
+The new data.frame `surveys_complete` now has only complete data.  Lets see how many observations of each species was retained: 
+
 
 ```{r, purl=FALSE}
-surveys_with_weights <- surveys[!is.na(surveys$weight), ]
+table(surveys_complete$species)
 ```
---->
+Many species have 0 values in this table, meaning there are no records of this species left (i.e. none had the weight recorded).  Yet they still show up in this table. This is because R "remembers" all species that were found in the
+original dataset, even though they aren't included in this data set.  This could get annoying later on (with plotting, etc...). 
+
+To remove the `NA` and make things clearer, we can redefine the levels for the factor "species" by re-establishing this as a factor. 
+
+```{r, purl=FALSE}
+surveys_complete$species <- factor(surveys_complete$species)
+
+```
+An equivalent way to do this is to us the droplevels() function. This will work if you have many columns from the same data frame that need excess factors removed. 
+
+```{r}
+surveys_complete <- droplevels(surveys_complete)
+```
+
+Now see how things are looking: 
+
+```{r}
+table(surveys_complete$species)
+```
+
+
+## PAUSE ##
+Make sure everyone has a clean copy of surveys_complete. 
+
+If you have been lost/confused/in the bathroom, you can catch up now with: 
+
+```{r}
+##CLEAR WORKPACE????
+
+#surveys <- read.csv('data/surveys.csv')
+surveys$logwgt <- log(surveys$wgt)
+surveys$plot <- as.factor(surveys$plot)
+surveys_complete <- surveys[complete.cases(surveys), ]
+surveys_complete <- droplevels(surveys_complete)
+
+
+```
+
+
 
 ### Challenge
 
@@ -93,9 +127,9 @@ surveys_with_weights <- surveys[!is.na(surveys$weight), ]
 use the function `length()` (e.g., `length(surveys$wgt)`). Using `length()`, how
 many animals have not had their weights recorded?
 
-1. What is the median weight for the males?
-
 1. What is the range (minimum and maximum) weight?
+
+1. What is the median weight for the males?
 
 1. Bonus question: what is the standard error for the weight? (hints: there is
    no built-in function to compute standard errors, and the function for the
@@ -105,52 +139,51 @@ many animals have not had their weights recorded?
 ## 1. To determine the number of elements found in a vector, we can use
 ## use the function `length()` (e.g., `length(surveys$wgt)`). Using `length()`, how
 ## many animals have not had their weights recorded?
+length(surveys$wgt)-length(wgt_noNA)
+summary(surveys$wgt)
 
-## 2. What is the median weight for the males?
 
-## 3. What is the range (minimum and maximum) weight?
+## 2. What is the range (minimum and maximum) weight?
+min(surveys$wgt, na.rm=TRUE)
+max(surveys$wgt, na.rm=T)
+range(surveys$wgt, na.rm=T)
 
-## 4. Bonus question: what is the standard error for the weight? (hints: there is
-##    no built-in function to compute standard errors, and the function for the
-##    square root is `sqrt()`).
+min(surveys_complete$wgt)
+max(surveys_complete$wgt)
+range(surveys_complete$wgt)
+
+## 3. What is the median weight for the males?
+median(subset(surveys, sex="M")$wgt, na.rm=T)
+median(subset(surveys_complete, sex="M")$wgt)
+
 ```
 
 # Statistics across factor levels
 
-```{r, echo=FALSE, purl=TRUE}
-## Statistics across factor levels
-```
-
-What if we want the maximum weight for all animals, or the average for each
+What if we want the maximum weight for each species, or the mean for each
 plot?
 
 R comes with convenient functions to do this kind of operations, functions in
 the `apply` family.
 
 For instance, `tapply()` allows us to repeat a function across each level of a
-factor. The format is:
+factor. The format is: 
 
-```{r, eval=FALSE, purl=FALSE}
-tapply(columns_to_do_the_calculations_on, factor_to_sort_on, function)
-```
+`tapply(columns_to_do_the_calculations_on, factor_to_sort_on, function)`
 
-If we want to calculate the mean for each species (using the complete dataset):
+If we want to calculate the maximum for each species (using the complete dataset):
 
 ```{r, purl=FALSE}
-tapply(surveys_complete$wgt, surveys_complete$species, mean)
+tapply(surveys_complete$wgt, surveys_complete$species, max)
 ```
 
-This produces some `NA` because R "remembers" all species that were found in the
-original dataset, even if they didn't have any weight data associated with them
-in the current dataset. To remove the `NA` and make things clearer, we can
-redefine the levels for the factor "species" before calculating the means. Let's
-also create an object to store these values:
+If we want to calculate the mean for each plot:
 
 ```{r, purl=FALSE}
-surveys_complete$species <- factor(surveys_complete$species)
-species_mean <- tapply(surveys_complete$wgt, surveys_complete$species, mean)
+tapply(surveys_complete$wgt, surveys_complete$plot, mean)
 ```
 
+<!--- Can we skip this, or do we need to use this later? 
 ### Challenge
 
 1. Create new objects to store: the standard deviation, the maximum and minimum
@@ -180,6 +213,7 @@ species_mean <- tapply(surveys_complete$wgt, surveys_complete$species, mean)
 ```{r, purl=FALSE}
 species_max <- tapply(surveys_complete$wgt, surveys_complete$species, max)
 species_min <- tapply(surveys_complete$wgt, surveys_complete$species, min)
+species_mean <- tapply(surveys_complete$wgt, surveys_complete$species, min)
 species_sd <- tapply(surveys_complete$wgt, surveys_complete$species, sd)
 nlevels(surveys_complete$species) # or length(species_mean)
 surveys_summary <- data.frame(species=levels(surveys_complete$species),
@@ -189,6 +223,8 @@ surveys_summary <- data.frame(species=levels(surveys_complete$species),
                               max_wgt=species_max)
 ```
 
+
+---> 
 ```{r, echo=FALSE, purl=TRUE}
 ## Plotting
 ```
@@ -205,7 +241,7 @@ Let's use the `surveys_summary` data that we generated and plot it.
 R has built in plotting functions.
 
 ```{r, purl=FALSE}
-barplot(surveys_summary$mean_wgt)
+barplot(table(surveys_complete$species))
 ```
 
 The axis labels are too big though, so you can't see them all. Let's change that.
@@ -217,7 +253,7 @@ barplot(surveys_summary$mean_wgt, cex.names=0.4)
 Alternatively, we may want to flip the axes to have more room for the species names:
 
 ```{r, purl=FALSE}
-barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1)
+barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1, cex.names=0.6)
 ```
 
 Let's also add some colors, and add a main title, label the axis:
@@ -252,9 +288,7 @@ most classes included in R base. To explore some of the possibilities:
 example(barplot)
 ```
 
-There's also a plotting package called [`ggplot2`](http://docs.ggplot2.org/)
-that adds a lot of functionality. The syntax takes some getting used to but it's
-extremely powerful and flexible.
+
 
 If you wanted to output this plot to a pdf file rather than to the screen, you
 can specify where you want the plot to go with the `pdf()` function. If you
