@@ -5,9 +5,9 @@ title: Creating Things
 ---
 <div class="objectives" markdown="1">
 
-#### Objectives    
-*   Create a directory hierarchy that matches a given diagram.   
-*   Create files in that hierarchy using an editor or by copying and renaming existing files.   
+#### Objectives
+*   Create a directory hierarchy that matches a given diagram.
+*   Create files in that hierarchy using an editor or by copying and renaming existing files.
 *   Display the contents of a directory using the command line.
 *   Delete specified files and/or directories.
 
@@ -15,8 +15,8 @@ title: Creating Things
 
 We now know how to explore files and directories,
 but how do we create them in the first place?
-Let's go back to Vlad's home directory,
-`/users/vlad`,
+Let's go back to Nelle's home directory,
+`/users/nelle`,
 and use `ls -F` to see what it contains:
 
 ~~~
@@ -24,7 +24,7 @@ $ pwd
 ~~~
 {:class="in"}
 ~~~
-/users/vlad
+/users/nelle
 ~~~
 {:class="out"}
 ~~~
@@ -32,13 +32,13 @@ $ ls -F
 ~~~
 {:class="in"}
 ~~~
-bin/         data/     mail/      music/
-notes.txt    papers/   pizza.cfg  solar/
-solar.pdf    swc/
+creatures/  molecules/           pizza.cfg
+data/       north-pacific-gyre/  solar.pdf
+Desktop/    notes.txt            writing/
 ~~~
 {:class="out"}
 
-Let us create a new directory called `thesis` using the command `mkdir thesis`
+Let's create a new directory called `thesis` using the command `mkdir thesis`
 (which has no output):
 
 ~~~
@@ -57,9 +57,10 @@ $ ls -F
 ~~~
 {:class="in"}
 ~~~
-bin/         data/     mail/      music/
-notes.txt    papers/   pizza.cfg  solar/
-solar.pdf    swc/      thesis/
+creatures/  north-pacific-gyre/  thesis/
+data/       notes.txt            writing/
+Desktop/    pizza.cfg
+molecules/  solar.pdf
 ~~~
 {:class="out"}
 
@@ -89,8 +90,8 @@ $ nano draft.txt
 > many programmers use [Emacs](http://www.gnu.org/software/emacs/) or
 > [Vim](http://www.vim.org/) (both of which are completely unintuitive,
 > even by Unix standards), or a graphical editor such as
-> [Gedit](http://projects.gnome.org/gedit/) or [Sublime](http://sublimetext.com/).
-> On Windows, you may wish to use [Notepad++](http://notepad-plus-plus.org/).
+> [Gedit](http://projects.gnome.org/gedit/). On Windows, you may wish to
+> use [Notepad++](http://notepad-plus-plus.org/).
 > 
 > No matter what editor you use, you will need to know where it searches
 > for and saves files. If you start it from the shell, it will (probably)
@@ -145,14 +146,14 @@ $ ls
 > computer may recycle the file's disk space right away.
 
 Let's re-create that file
-and then move up one directory to `/users/vlad` using `cd ..`:
+and then move up one directory to `/users/nelle` using `cd ..`:
 
 ~~~
 $ pwd
 ~~~
 {:class="in"}
 ~~~
-/users/vlad/thesis
+/users/nelle/thesis
 ~~~
 {:class="out"}
 ~~~
@@ -226,8 +227,6 @@ $ rmdir thesis
 > the directory contains sub-directories, `rm -r` does the same thing to
 > them, and so on. It's very handy, but can do a lot of damage if used
 > without care.
->
-> There are plenty of commands using -r flag.
 
 Let's create that directory and file one more time.
 (Note that this time we're running `nano` with the path `thesis/draft.txt`,
@@ -238,7 +237,7 @@ $ pwd
 ~~~
 {:class="in"}
 ~~~
-/users/vlad
+/users/nelle
 ~~~
 {:class="out"}
 ~~~
@@ -354,10 +353,10 @@ thesis/quotations.txt
 > #### Another Useful Abbreviation
 > 
 > The shell interprets the character `~` (tilde) at the start of a path to
-> mean "the current user's home directory". For example, if Vlad's home
-> directory is `/home/vlad`, then `~/data` is equivalent to
-> `/home/vlad/data`. This only works if it is the first character in the
-> path: `here/there/~/elsewhere` is *not* `/home/vlad/elsewhere`.
+> mean "the current user's home directory". For example, if Nelle's home
+> directory is `/home/nelle`, then `~/data` is equivalent to
+> `/home/nelle/data`. This only works if it is the first character in the
+> path: `here/there/~/elsewhere` is *not* `/home/nelle/elsewhere`.
 
 <div class="keypoints" markdown="1">
 
@@ -368,59 +367,61 @@ thesis/quotations.txt
 
 </div>
 
-<div class="challenges" markdown="1">
+<div class="challenge" markdown="1">
+What is the output of the closing `ls` command in the sequence shown below?
 
-#### Challenges
+~~~
+$ pwd
+/home/jamie/data
+$ ls
+proteins.dat
+$ mkdir recombine
+$ mv proteins.dat recombine
+$ cp recombine/proteins.dat ../proteins-saved.dat
+$ ls
+~~~
+</div>
 
-1.  What is the output of the closing `ls` command in the sequence shown below?
+<div class="challenge" markdown="1">
+Suppose that:
 
-    ~~~
-    $ pwd
-    /home/thing/data
-    $ ls
-    proteins.dat
-    $ mkdir recombine
-    $ mv proteins.dat recombine
-    $ cp recombine/proteins.dat ../proteins-saved.dat
-    $ ls
-    ~~~
+~~~
+$ ls -F
+analyzed/  fructose.dat    raw/   sucrose.dat
+~~~
 
-2.  Suppose that:
+What command(s) could you run so that the commands below will produce the output shown?
 
-    ~~~
-    $ ls -F
-    analyzed/  fructose.dat    raw/   sucrose.dat
-    ~~~
+~~~
+$ ls
+analyzed   raw
+$ ls analyzed
+fructose.dat    sucrose.dat
+~~~
+</div>
 
-    What command(s) could you run so that the commands below will produce the output shown?
+<div class="challenge" markdown="1">
+What does `cp` do when given several filenames and a directory name, as in:
 
-    ~~~
-    $ ls
-    analyzed   raw
-    $ ls analyzed
-    fructose.dat    sucrose.dat
-    ~~~
+~~~
+$ mkdir backup
+$ cp thesis/citations.txt thesis/quotations.txt backup
+~~~
 
-3.  What does `cp` do when given several filenames and a directory name, as in:
+What does `cp` do when given three or more filenames, as in:
 
-    ~~~
-    $ mkdir backup
-    $ cp thesis/citations.txt thesis/quotations.txt backup
-    ~~~
+~~~
+$ ls -F
+intro.txt    methods.txt    survey.txt
+$ cp intro.txt methods.txt survey.txt
+~~~
+</div>
 
-    What does `cp` do when given three or more filenames, as in:
-
-    ~~~
-    $ ls -F
-    intro.txt    methods.txt    survey.txt
-    $ cp intro.txt methods.txt survey.txt
-    ~~~
-
-4.  The command `ls -R` lists the contents of directories recursively,
-    i.e., lists their sub-directories, sub-sub-directories, and so on
-    in alphabetical order at each level.
-    The command `ls -t` lists things by time of last change,
-    with most recently changed files or directories first.
-    In what order does `ls -R -t` display things?
-
+<div class="challenge" markdown="1">
+The command `ls -R` lists the contents of directories recursively,
+i.e., lists their sub-directories, sub-sub-directories, and so on
+in alphabetical order at each level.
+The command `ls -t` lists things by time of last change,
+with most recently changed files or directories first.
+In what order does `ls -R -t` display things?
 </div>
