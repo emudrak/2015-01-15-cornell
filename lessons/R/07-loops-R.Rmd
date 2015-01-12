@@ -1,5 +1,5 @@
 ```{r, echo=FALSE}
-opts_chunk$set(results='hide')
+knitr::opts_chunk$set(results='hide')
 ```
 # Analyzing Multiple Data Sets
 
@@ -9,24 +9,32 @@ We have created a function called analyze that creates graphs of the minimum, av
 analyze <- function(filename) {
 	data <- read.csv(filename)
 		
-	avg_inflammation <- apply(data, 2, mean)
-	max_inflammation <- apply(data, 2, max)
-	min_inflammation <- apply(data, 2, min)
-	tempo <- c(1:ncol(data))
+	avg_day_inflammation <- apply(data, 2, mean)
+	max_day_inflammation <- apply(data, 2, max)
+	min_day_inflammation <- apply(data, 2, min)
   
-	plot(tempo, avg_inflammation)
-	plot(tempo, min_inflammation)
-	plot(tempo, max_inflammation)
+  par(mfrow=c(1,3))
+  plot(avg_day_inflammation, type="l")
+  plot(max_day_inflammation, type="l")
+  plot(min_day_inflammation, type="l")
 }
-	  
-analyze('data/inflammation-01.csv')
 ```
 
 We can use it to analyze other data sets one by one:
 
-```{r}
+```{r, eval=FALSE}
+analyze('data/inflammation-01.csv')
 analyze('data/inflammation-02.csv')
 ```
+
+```{r echo=FALSE}
+analyze("../../data/inflammation/inflammation-01.csv")
+analyze("../../data/inflammation/inflammation-02.csv")
+```
+
+
+
+
 
 but we have a dozen data sets right now and more on the way. We want to create plots for all our data sets with a single statement. To do that, we'll have to teach the computer how to repeat things.
 
@@ -42,53 +50,7 @@ but we have a dozen data sets right now and more on the way. We want to create p
 * Use a for loop to process multiple files.
 
 ## For Loops
-
-Suppose we want to print each word in our sentence we defined earlier on a line of its own. One way is to use four print statements:
-
-```{r, echo=FALSE}
-pangram <- "the quick brown fox jumps over the lazy dog"
-words   <-  words <- strsplit(pangram, " ")[[1]]
-```
-```{r}
-print_words = function(sentence){
-	print (sentence[1])
-	print (sentence[2])
-	print (sentence[3])
-	print (sentence[4])
-	print (sentence[5])
-}
-
-print_words(words)
-```
-
-but that's a bad approach for two reasons:
-
-It doesn't scale: if we want to print the elements in a vector that's hundreds long, we'd be better off just typing them in.
-
-It's fragile: if we give it a longer vector, it only prints part of the data, and if we give it a shorter one, it produces an error or gives us `NA` values because we're asking for elements that don't exist.
-
-```{r}
-hello <- c("I", "was", "here")
-print_words(hello)
-```
-
-Here's a better approach:
-
-```{r}
-print_words <- function(sentence) {
-	for(i in 1:length(sentence)){
-		print(sentence[i])
-	}
-}
-```
-
-This is shorter---certainly shorter than something that prints every character in a hundred-letter string---and more robust as well:
-
-```{r}
-print_words('oxygen')
-```
-
-The improved version of `print_words` uses a `for loop` to repeat an operation---in this case, printing---once for each thing in a collection. The general form of a loop is:
+ The general form of a loop is:
 
 ```{r, eval=FALSE}
 for (variable in collection){
@@ -97,6 +59,17 @@ for (variable in collection){
 ```
 
 We can call the loop variable anything we like, but there must be a curly brace `{` at the end of the line starting the loop, and we should indent the body of the loop.
+
+Here is a loop that prints out the squares of a set of numbers
+
+```{r }
+
+for (i in 1:10){
+  sq <- i^2
+  print(paste("The square of ", i, "is", sq))
+}
+
+```
 
 Here's another loop that repeatedly updates a variable:
 
@@ -110,23 +83,6 @@ for (vowel in 1:nchar('aeiou')){
 
 It's worth tracing the execution of this little program step by step. Since there are five characters in 'aeiou', the `print` statement will be executed five times. The first time around, length is zero (the value assigned to it on line 1) and vowel is 'a'. The statement adds 1 to the old value of length, producing 1, and updates length to refer to that new value. The next time around, vowel is 'e' and length is 1, so length is updated to be 2. After three more updates, length is 5; since there is nothing left in 'aeiou' for R to process, the loop finishes and the `print` statement tells us our final answer.
 
-Note that a loop variable is just a variable that's being used to record progress in a loop. It still exists after the loop is over, and we can re-use variables previously defined as loop variables as well:
-
-```{r}
-letter = 'z'
-for (letter in 1:nchar('abc')){
-	print(substr('abc',letter, letter))
-	print(paste('after the loop, letter is', letter))
-}
-```
-
-Note also that finding the length of a string is such a common operation that R actually has a built-in function to do it called len:
-
-```{r}
-nchar('aeiou')
-```
-
-`nchar` is much faster than any function we could write ourselves, and much easier to read than a two-line loop. We can also use `length` to tell use the number of elements in a vector, the number of columns in a dataframe, or the number of cells in a matrix.
 
 ### Challenges
 
@@ -141,92 +97,21 @@ print_numbers <- function(N) {
 }
 ```
 
-2. Exponentiation is built into R: `2**4`. Write a function called expo that uses a loop to calculate the same result.
+2. Exponentiation is built into R: `2**4`. Write a function called expo that uses a loop to calculate the same result. Make the form be: `expo(base, power)`
 
-3. We can also apply some simple methods to R vectors. One of these is called `sort`. It works on numbers or letters: 
+```{r }
 
-```{r}
-sort(words)
-sort(words, decreasing = TRUE)
-```
 
-Write a function called rev that does the same thing. As always, be sure to include a docstring.
-
-## Lists
-
-In R lists act as containers. Unlike atomic vectors, the contents of a list are not restricted to a single mode and can encompass any mixture of data types. Lists are sometimes called recursive vectors, because a list can contain other lists. This makes them fundamentally different from atomic vectors. 
-
-A list is a special type of vector. Each element can be a different type.
-
-Create lists using `list()` or coerce other objects using `as.list()`
-
-```{r}
-x <- list(1, "a", TRUE, 1+4i)
-x
-```
-
-```{r}
-x <- 1:10
-x <- as.list(x)
-length(x)
-```
-
-What is the class of `x[1]`? How about `x[[1]]`?
-
-```{r}
-xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
-xlist
-```
-
-What is the length of this object? What about its structure?
-
-A list can contain many lists nested inside.
-
-```{r}
-temp <- list(list(list(list())))
-temp
-```
-
-```{r}
-is.recursive(temp)
-```
-
-Lists are extremely useful inside functions. You can "staple" together lots of different kinds of results into a single object that a function can return.
-
-A list does not print to the console like a vector. Instead, each element of the list starts on a new line.
-
-Elements are indexed by double brackets. Single brackets will still return a(nother) list.
-
-# Ch-Ch-Ch-Changes
-
-Data that can be changed is called mutable, while data that cannot be is called immutable. Like strings, numbers are immutable: there's no way to make the number 0 have the value 1 or vice versa (at least, not in R—there actually are languages that will let people do this, with predictably confusing results). vectors, data frames, and matrices, on the other hand, are mutable: they can be modified after they have been created.
-
-Programs that modify data in place can be harder to understand than ones that don't because readers may have to mentally sum up many lines of code in order to figure out what the value of something actually is. On the other hand, programs that modify data in place instead of creating copies that are almost identical to the original every time they want to make a small change are much more efficient.
-There are many ways to change the contents besides assigning to elements:
-
-```{r}
-odds <- c(1,3,5,7,9)
-odds <- append(odds, 13)
-odds <- odds + 1
-odds <- odds[-1]
-odds <- sort(odds, decreasing = TRUE)
-```
-
-Challenges
--------------
-
-1. Write a function called total that calculates the sum of the values in a list. (R has a built-in function called `sum` that does this for you. Please don't use it for this exercise.)
-
-```{r}
-total <- function(vector) {
-	#calculates the sum of the values in a vector
-	sum <- 0
-	for (i in 1:length(vector)){
-		sum <- sum + vector[i]
-	}
-	sum
+expo <- function(base, power){
+  result <- 1
+  for (i in 1:power){
+    result <- result*base
+  }
+  return(result)
+  
 }
 ```
+
 
 # Processing Multiple Files
 
@@ -240,14 +125,20 @@ list.files(pattern = "*.R")
 
 or to get the names of all our CSV data files:
 
-```{r}
-list.files(pattern="*.csv", recursive = TRUE)
+```{r, eval=FALSE}
+filenames <- list.files(pattern="*.csv", recursive = TRUE)
+filenames
 ```
+
+```{r, echo=FALSE, results="show"}
+filenames <- list.files(path="../../data/inflammation/", pattern="*.csv", recursive = TRUE)
+filenames
+```
+
 
 As these examples show, `list.files()` result is a list of strings, which means we can loop over it to do something with each filename in turn. In our case, the "something" we want is our analyze function. Let's test it by analyzing the first three files in the list:
 
 ```{r}
-filenames <- list.files(pattern = "*.csv", recursive = TRUE)
 filenames <- filenames[1:3]
 
 for (f in 1:length(filenames)){

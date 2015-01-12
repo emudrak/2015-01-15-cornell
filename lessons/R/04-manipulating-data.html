@@ -175,82 +175,146 @@ colnames(surveys_noDate2)</code></pre>
 <h2>Removing rows</h2>
 <p>Typically rows are not associated with names, so to remove them from the <code>data.frame</code>, you can do:</p>
 <pre class="r"><code>surveys_missingRows &lt;- surveys[-c(10, 50:70), ] # removing rows 10, and 50 to 70</code></pre>
-</div>
-</div>
-<div id="building-data-frames-from-existing-ones" class="section level1">
-<h1>Building data frames from existing ones</h1>
-<p>You can stack data frames next to each other using <code>cbind()</code> (<strong>c</strong>olumn <strong>bind</strong>) and on top of each other using <code>rbind</code> (<strong>r</strong>ow <strong>bind</strong>).</p>
-<p>To illustrate this, let’s use some smaller data frames. You can create data frames directly in R</p>
-<pre class="r"><code>land_animals &lt;- data.frame(animal=c(&quot;dog&quot;, &quot;cat&quot;, &quot;bunny&quot;, &quot;snake&quot;),
-                           feel=c(&quot;furry&quot;, &quot;furry&quot;, &quot;fluffy&quot;, &quot;smooth&quot;),
+<!----
+# Building data frames from existing ones  Skip?? 
+
+You can stack data frames next to each other using `cbind()` (__c__olumn __bind__) and on top of each other using `rbind` (__r__ow __bind__).
+
+To illustrate this, let's use some smaller data frames.  You can create data frames directly in R
+
+
+```r
+land_animals <- data.frame(animal=c("dog", "cat", "bunny", "snake"),
+                           feel=c("furry", "furry", "fluffy", "smooth"),
                            weight=c(45, 8, 5.5, 1.2))
                            
-sea_animals &lt;- data.frame(animal=c(&quot;fish&quot;, &quot;sea cucumber&quot;, &quot;sea urchin&quot;),
-                           feel=c(&quot;smooth&quot;, &quot;squishy&quot;, &quot;spiny&quot;),
+sea_animals <- data.frame(animal=c("fish", "sea cucumber", "sea urchin"),
+                           feel=c("smooth", "squishy", "spiny"),
                            weight=c( 8, 1.1, 0.8))
 
-more_info &lt;- data.frame(legs=c(4,4,4,0,0,0,0), eyes=c(2,2,2,2,2,0,0))</code></pre>
-<pre class="r"><code>land_animals</code></pre>
-<pre><code>  animal   feel weight
+more_info <- data.frame(legs=c(4,4,4,0,0,0,0), eyes=c(2,2,2,2,2,0,0))
+```
+
+
+```r
+land_animals
+```
+
+```
+  animal   feel weight
 1    dog  furry   45.0
 2    cat  furry    8.0
 3  bunny fluffy    5.5
-4  snake smooth    1.2</code></pre>
-<pre class="r"><code>sea_animals</code></pre>
-<pre><code>        animal    feel weight
+4  snake smooth    1.2
+```
+
+```r
+sea_animals
+```
+
+```
+        animal    feel weight
 1         fish  smooth    8.0
 2 sea cucumber squishy    1.1
-3   sea urchin   spiny    0.8</code></pre>
-<pre class="r"><code>more_info</code></pre>
-<pre><code>  legs eyes
+3   sea urchin   spiny    0.8
+```
+
+```r
+more_info
+```
+
+```
+  legs eyes
 1    4    2
 2    4    2
 3    4    2
 4    0    2
 5    0    2
 6    0    0
-7    0    0</code></pre>
-<p>With <code>rbind()</code> the number of columns and their names must be identical between the two objects:</p>
-<pre class="r"><code>all_animals &lt;- rbind(land_animals, sea_animals)
-all_animals</code></pre>
-<pre><code>        animal    feel weight
+7    0    0
+```
+
+
+With `rbind()` the number of columns and their names must be identical between the two objects:
+
+```r
+all_animals <- rbind(land_animals, sea_animals)
+all_animals
+```
+
+```
+        animal    feel weight
 1          dog   furry   45.0
 2          cat   furry    8.0
 3        bunny  fluffy    5.5
 4        snake  smooth    1.2
 5         fish  smooth    8.0
 6 sea cucumber squishy    1.1
-7   sea urchin   spiny    0.8</code></pre>
-<p>If not, you get an error:</p>
-<pre class="r"><code>rbind(land_animals, more_info)</code></pre>
-<pre><code>Error in rbind(deparse.level, ...): numbers of columns of arguments do not match</code></pre>
-<p>With <code>cbind()</code> additional columns must have the same number of elements as there are rows in the <code>data.frame</code>.</p>
-<pre class="r"><code>all_animals &lt;- cbind(all_animals, more_info)
-all_animals</code></pre>
-<pre><code>        animal    feel weight legs eyes
+7   sea urchin   spiny    0.8
+```
+
+If not, you get an error: 
+
+```r
+rbind(land_animals, more_info)
+```
+
+```
+Error in rbind(deparse.level, ...): numbers of columns of arguments do not match
+```
+
+
+With `cbind()` additional columns must have the same number
+of elements as there are rows in the `data.frame`.
+
+
+```r
+all_animals <- cbind(all_animals, more_info)
+all_animals
+```
+
+```
+        animal    feel weight legs eyes
 1          dog   furry   45.0    4    2
 2          cat   furry    8.0    4    2
 3        bunny  fluffy    5.5    4    2
 4        snake  smooth    1.2    0    2
 5         fish  smooth    8.0    0    2
 6 sea cucumber squishy    1.1    0    0
-7   sea urchin   spiny    0.8    0    0</code></pre>
-<div id="talk-about-recycling" class="section level4">
-<h4>TALK ABOUT RECYCLING???</h4>
-<p><strong>Danger</strong> if you don’t have matching number of rows when doing cbind, R tries to “recycle” if the length of the longer object is a multiple of the shorter one. Here, we try to cbind <code>sea_animals</code> (with 3 elements) with more_info with the first row removed so it has 6 elements. Since 6 is a multiple of 3, R will recycle values in a way to make it “work out:”</p>
-<pre class="r"><code>cbind(sea_animals, more_info[-1,])</code></pre>
-<pre><code>        animal    feel weight legs eyes
+7   sea urchin   spiny    0.8    0    0
+```
+
+####TALK ABOUT RECYCLING???
+**Danger** if you don't have matching number of rows when doing cbind, R tries to "recycle" if the length of the longer object is a multiple of the shorter one.   Here, we try to cbind `sea_animals` (with 3 elements) with more_info with the first row removed so it has 6 elements.  Since 6 is a multiple of 3, R will recycle values in a way to make it "work out:"
+
+```r
+cbind(sea_animals, more_info[-1,])
+```
+
+```
+        animal    feel weight legs eyes
 2         fish  smooth    8.0    4    2
 3 sea cucumber squishy    1.1    4    2
 4   sea urchin   spiny    0.8    0    2
 5         fish  smooth    8.0    0    2
 6 sea cucumber squishy    1.1    0    0
-7   sea urchin   spiny    0.8    0    0</code></pre>
-<p>So R wrote out the <code>sea_animals</code> twice to allow all 6 elements of <code>more_info</code> to fit in the data.frame. This could be very bad if you’re not aware of it.</p>
-<p>If the longer object is <em>not</em> a multiple of the shorter one, R will return an error:</p>
-<pre class="r"><code>cbind(land_animals, more_info)</code></pre>
-<pre><code>Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 4, 7</code></pre>
-<!--- should we cover merge()? --->
+7   sea urchin   spiny    0.8    0    0
+```
+
+So R wrote out the `sea_animals` twice to allow all 6 elements of `more_info` to fit in the data.frame.  This could be very bad if you're not aware of it. 
+
+If the longer object is *not* a multiple of the shorter one, R will return an error: 
+
+
+```r
+cbind(land_animals, more_info)
+```
+
+```
+Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 4, 7
+```
+
+ --->
 
 
 </div>
