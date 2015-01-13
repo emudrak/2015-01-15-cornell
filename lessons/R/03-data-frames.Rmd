@@ -68,6 +68,11 @@ Our survey data frame has rows and columns (it has 2 dimensions), if we want to
 extract some specific data from it, we need to specify the "coordinates" we want
 from it. Row numbers come first, followed by column numbers.
 
+*If you have not already downloaded the [surveys](http://emudrak.github.io/2015-01-15-cornell/data/biology/surveys.csv) data
+and put it in directory `"data"` within your working directory, please do so now.*
+ 
+ 
+
 ```{r, purl=FALSE}
 surveys[1, 1]   # first element in the first column of the data frame
 surveys[1, 6]   # first element in the 6th column
@@ -231,8 +236,8 @@ surveys_missingRows <- surveys[-c(10, 50:70), ] # removing rows 10, and 50 to 70
 ```
 
 
-<!----
-# Building data frames from existing ones  Skip?? 
+
+# Building data frames from existing ones (If time) 
 
 You can stack data frames next to each other using `cbind()` (__c__olumn __bind__) and on top of each other using `rbind` (__r__ow __bind__).
 
@@ -283,7 +288,7 @@ all_animals <- cbind(all_animals, more_info)
 all_animals
 ```
 
-####TALK ABOUT RECYCLING???
+#### RECYCLING
 **Danger** if you don't have matching number of rows when doing cbind, R tries to "recycle" if the length of the longer object is a multiple of the shorter one.   Here, we try to cbind `sea_animals` (with 3 elements) with more_info with the first row removed so it has 6 elements.  Since 6 is a multiple of 3, R will recycle values in a way to make it "work out:"
 ```{r}
 
@@ -301,7 +306,6 @@ cbind(land_animals, more_info)
 
 ```
 
- --->
 
 
 

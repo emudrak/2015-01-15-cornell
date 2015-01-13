@@ -35,7 +35,7 @@ analyze('data/inflammation-01.csv')
 analyze('data/inflammation-02.csv')
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height=4}
 analyze("../../data/inflammation/inflammation-01.csv")
 analyze("../../data/inflammation/inflammation-02.csv")
 ```
