@@ -1,4 +1,7 @@
-# Data files for Data Carpentry Workshop
+---
+title: Data files for Data Carpentry Workshop
+layout: post
+---
 
 [aphid_data_Bahlai_2014.xlsx][1]
 [make_teaching_dataset.R][2]
