@@ -12,7 +12,7 @@ layout: post
 [species.csv][6]  
 [surveys-exercise-extract_month.csv][7]  
 [surveys.csv][8]  
-[inflammation.zip][9]
+[inflammation.zip][9]  
 [DataWithZeros.xlsx][10]
 
 [1]: /2015-01-15-cornell/data/biology/aphid_data_Bahlai_2014.xlsx
