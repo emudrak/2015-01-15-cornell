@@ -23,6 +23,7 @@ for each level and a very brief introduction to plotting.
 * [The `data.frame` class](03-data-frames.html)
 * [Analyzing and Plotting data](04-analyzing-data.html)
 * [Writing functions](05-func-R.html)
+* [Analyzing multiple datasets](06-loops-R.html)
 
 
 ## Other resources
