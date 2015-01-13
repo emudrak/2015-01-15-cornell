@@ -1,3 +1,11 @@
+---
+layout: topic
+title: Loops
+minutes: 60
+---
+
+
+
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(results='hide')
 ```
@@ -32,11 +40,7 @@ analyze("../../data/inflammation/inflammation-01.csv")
 analyze("../../data/inflammation/inflammation-02.csv")
 ```
 
-
-
-
-
-but we have a dozen data sets right now and more on the way. We want to create plots for all our data sets with a single statement. To do that, we'll have to teach the computer how to repeat things.
+But we have a dozen data sets right now and more on the way. We want to create plots for all our data sets with a single statement. To do that, we'll have to teach the computer how to repeat things.
 
 ## Objectives
 
@@ -131,7 +135,7 @@ filenames
 ```
 
 ```{r, echo=FALSE, results="show"}
-filenames <- list.files(path="../../data/inflammation/", pattern="*.csv", recursive = TRUE)
+filenames <- list.files(path="../../data/inflammation/", pattern="*.csv", recursive = TRUE, full.names=TRUE)
 filenames
 ```
 
@@ -145,7 +149,9 @@ for (f in 1:length(filenames)){
 	print (filenames[f])
 	analyze(filenames[f])
 }
+
 ```
+
 
 Sure enough, the maxima of these data sets show exactly the same ramp as the first, and their minima show the same staircase structure.
 
@@ -172,4 +178,5 @@ We have now solved our original problem: we can analyze any number of data files
 * Use functions to make code easier to re-use and easier to understand.
 * Use vectors and arrays to store related values, and loops to repeat operations on them.
 
-We have one more big idea to introduce...
+
+

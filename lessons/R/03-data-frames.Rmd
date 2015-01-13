@@ -1,6 +1,6 @@
 ---
 layout: topic
-title: The `data.frame` class
+title: The data.frame class
 minutes: 30
 ---
 

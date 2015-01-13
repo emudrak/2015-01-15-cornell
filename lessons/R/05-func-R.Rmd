@@ -1,6 +1,6 @@
 ---
 layout: topic
-title: Analyzing and Plotting Data
+title: Writing Functions
 minutes: 60
 ---
 
@@ -222,7 +222,7 @@ Though you should avoid storing data like this, some researchers receive data th
 ```{r, message=FALSE}
 library(XLConnect)
 
-DataW0 <- loadWorkbook("../../data/DataWithZeros.xlsx")
+DataW0 <- loadWorkbook("../../data/biology/DataWithZeros.xlsx")
 zero1 <- readWorksheet(DataW0, sheet="Sheet1")
 zero2 <- readWorksheet(DataW0, sheet="Second")
 zero3 <- readWorksheet(DataW0, sheet="Sheet3")
@@ -319,7 +319,7 @@ Now we can see if our function works on our data.  Let's read it in again (since
 ```{r, message=FALSE}
 library(XLConnect)
 
-DataW0 <- loadWorkbook("../../data/DataWithZeros.xlsx")
+DataW0 <- loadWorkbook("../../data/biology/DataWithZeros.xlsx")
 zero1 <- readWorksheet(DataW0, sheet="Sheet1")$x
 zero2 <- readWorksheet(DataW0, sheet="Second")$x
 zero3 <- readWorksheet(DataW0, sheet="Sheet3")$x
@@ -409,8 +409,6 @@ analyze <- function(filename){
 Try it out: 
 
 
-
-## Defining Defaults
 ```{r }
 
 analyze("../../data/inflammation/inflammation-01.csv")
@@ -433,4 +431,4 @@ We now have a function called analyze to visualize a single data set. We could u
 
 but the chances of us typing all 12 filenames correctly aren't great, and we'll be even worse off if we get another hundred files. What we need is a way to tell R to do something once for each file, and that will be the subject of the next lesson.
 
---->
+
