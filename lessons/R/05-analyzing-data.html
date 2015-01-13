@@ -67,8 +67,6 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="calculating-statistics" class="section level1">
 <h1>Calculating statistics</h1>
 <p>Let’s get a closer look at our data. For instance, we might want to know how many animals we trapped in each plot, or how many of each species were caught.</p>
-<p>To get a <code>vector</code> of all the species, we are going to use the <code>unique()</code> function that tells us the unique values in a given vector:</p>
-<pre class="r"><code>unique(surveys$species)</code></pre>
 <p>The function <code>table()</code>, tells us how many of each species we have:</p>
 <pre class="r"><code>table(surveys$species)</code></pre>
 <p>R has a lot of built in statistical functions, like <code>mean()</code>, <code>median()</code>, <code>max()</code>, <code>min()</code>, <code>var()</code>, <code>sd()</code>. Let’s start by calculating the average weight of all the animals using the function <code>mean()</code>:</p>
@@ -82,6 +80,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <pre class="r"><code>wgt_noNA &lt;- na.omit(surveys$wgt)</code></pre>
 <p>For some applications, it’s useful to keep all observations, for others, it might be best to remove all observations that contain missing data. The function <code>complete.cases()</code> removes any rows that contain at least one missing observation:</p>
 <pre class="r"><code>surveys_complete &lt;- surveys[complete.cases(surveys), ]</code></pre>
+</div>
+<div id="add-a-note-about-indexing-with-truefalse-if-this-is-the-first-time-theyve-seen-it" class="section level1">
+<h1>ADD A NOTE ABOUT INDEXING WITH TRUE/FALSE IF THIS IS THE FIRST TIME THEY“VE SEEN IT</h1>
 <p>The new data.frame <code>surveys_complete</code> now has only complete data. Lets see how many observations of each species was retained:</p>
 <pre class="r"><code>table(surveys_complete$species)</code></pre>
 <p>Many species have 0 values in this table, meaning there are no records of this species left (i.e. none had the weight recorded). Yet they still show up in this table. This is because R “remembers” all species that were found in the original dataset, even though they aren’t included in this data set. This could get annoying later on (with plotting, etc…).</p>
@@ -226,8 +227,8 @@ dev.off()</code></pre>
 <p>Alternatively you can change the working directory using the RStudio GUI using the menu option <code>Session</code> -&gt; <code>Set Working Directory</code> -&gt; <code>Choose Directory...</code></p>
 <p>Now we could load the data into R using <code>read.csv</code>:</p>
 <pre class="r"><code>read.csv(file = &quot;inflammation-01.csv&quot;, header = FALSE)</code></pre>
-<p>The expression <code>read.csv(...)</code> is a <a href="../../gloss.html#function-call">function call</a> that asks R to run the function <code>read.csv</code>.</p>
-<p><code>read.csv</code> has two <a href="../../gloss.html#argument">arguments</a>: the name of the file we want to read, and whether the first line of the file contains names for the columns of data. The filename needs to be a character string (or <a href="../../gloss.html#string">string</a> for short), so we put it in quotes. Assigning the second argument, <code>header</code>, to be <code>FALSE</code> indicates that the data file does not have column headers.</p>
+<p>The expression <code>read.csv(...)</code> is a <strong>function call</strong> that asks R to run the function <code>read.csv</code>.</p>
+<p><code>read.csv</code> has two <strong>arguments</strong>: the name of the file we want to read, and whether the first line of the file contains names for the columns of data. The filename needs to be a character string (or string for short), so we put it in quotes. Assigning the second argument, <code>header</code>, to be <code>FALSE</code> indicates that the data file does not have column headers.</p>
 <pre class="r"><code>dat &lt;- read.csv(file=&quot;../../data/inflammation/inflammation-01.csv&quot;)</code></pre>
 <pre class="r"><code>dat &lt;- read.csv(file = &quot;inflammation-01.csv&quot;, header = FALSE)
 

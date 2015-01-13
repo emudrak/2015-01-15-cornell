@@ -23,13 +23,6 @@ surveys <- read.csv(file="../../data/biology/surveys.csv")
 Let's get a closer look at our data. For instance, we might want to know how
 many animals we trapped in each plot, or how many of each species were caught.
 
-To get a `vector` of all the species, we are going to use the `unique()`
-function that tells us the unique values in a given vector:
-
-```{r, purl=FALSE}
-unique(surveys$species)
-```
-
 The function `table()`, tells us how many of each species we have:
 
 ```{r, purl=FALSE}
@@ -73,6 +66,9 @@ observation:
 surveys_complete <- surveys[complete.cases(surveys), ]
 
 ```
+#ADD A NOTE ABOUT INDEXING WITH TRUE/FALSE IF THIS IS THE FIRST TIME THEY"VE SEEN IT
+
+
 
 The new data.frame `surveys_complete` now has only complete data.  Lets see how many observations of each species was retained: 
 
@@ -356,10 +352,10 @@ Now we could load the data into R using `read.csv`:
 read.csv(file = "inflammation-01.csv", header = FALSE)
 ```
 
-The expression `read.csv(...)` is a [function call](../../gloss.html#function-call) that asks R to run the function `read.csv`. 
+The expression `read.csv(...)` is a **function call** that asks R to run the function `read.csv`. 
 
-`read.csv` has two [arguments](../../gloss.html#argument): the name of the file we want to read, and whether the first line of the file contains names for the columns of data.
-The filename needs to be a character string (or [string](../../gloss.html#string) for short), so we put it in quotes.
+`read.csv` has two **arguments**: the name of the file we want to read, and whether the first line of the file contains names for the columns of data.
+The filename needs to be a character string (or string for short), so we put it in quotes.
 Assigning the second argument, `header`, to be `FALSE` indicates that the data file does not have column headers.
 
 ```{r }
