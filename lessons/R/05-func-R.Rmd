@@ -373,13 +373,13 @@ This next challenge has several steps. Think about how you break down a difficul
 
 
 
-```{r }
+```{r results="hide"}
 dat <- read.csv(file="../../data/inflammation/inflammation-01.csv")
 ```
 
 
 
-```{r, results="hide", eval=FALSE}
+```{r,  eval=FALSE}
 dat <- read.csv(file = "inflammation-01.csv", header = FALSE)
 
 head(dat)

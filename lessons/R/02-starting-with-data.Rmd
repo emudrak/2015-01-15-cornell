@@ -38,7 +38,7 @@ correspondance)
 
 To get the data in a place that R can find it: 
 
-* [download the data file](https://github.com/datacarpentry/datacarpentry/raw/master/data/biology/surveys.csv)
+* [download the data file](http://emudrak.github.io/2015-01-15-cornell/data/biology/surveys.csv)
 * put it in directory `"data"` within your working directory for these exercises
 * open it in Excel to see what it looks like
  
