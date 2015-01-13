@@ -12,6 +12,8 @@ layout: post
 [species.csv][6]  
 [surveys-exercise-extract_month.csv][7]  
 [surveys.csv][8]  
+[inflammation.zip][9]
+DataWithZeros.xlsx[10]
 
 [1]: /2015-01-15-cornell/data/biology/aphid_data_Bahlai_2014.xlsx
 [2]: /2015-01-15-cornell/data/biology/make_teaching_dataset.R
@@ -21,3 +23,5 @@ layout: post
 [6]: /2015-01-15-cornell/data/biology/species.csv
 [7]: /2015-01-15-cornell/data/biology/surveys-exercise-extract_month.csv
 [8]: /2015-01-15-cornell/data/biology/surveys.csv
+[9]: /2015-01-15-cornell/data/biology/inflammation.zip
+[10]: /2015-01-15-cornell/data/biology/DataWithZeros.xlsx
