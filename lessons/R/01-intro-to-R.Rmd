@@ -1,7 +1,8 @@
 ---
-layout: topic
-title: Introduction to R
+title: "Introduction to R"
 minutes: 45
+output: word_document
+layout: topic
 ---
 
 ```{r, echo=FALSE, purl=FALSE}
@@ -32,12 +33,14 @@ You can get output from R simply by typing in math in the console
 ```
 
 However, to do useful and interesting things, we need to save the numbers as something we can remember and use later.  This is known as assigning _values_ to
-_objects_ or _variables_. To create objects, we need to give it a name followed by the
+_objects_ or _variables_. To create an object, we need to give it a name followed by the
 assignment operator `<-` and the value we want to give it:
 
 ```{r, purl=FALSE}
 weight_kg <- 55
 ```
+
+*Note*: There is a subtle difference between `<-` and `=`. Both will work to assign operators, but traditionalists preferr to use `<-` because `=` is also use to specify parameters in functions (which we'll learn about later).  
 
 Objects can be given any name such as `x`, `current_temperature`, or
 `subject_id`. You want your object names to be explicit and not too long. R is case sensitive. 
@@ -87,6 +90,8 @@ mass <- mass * 2.0     # mass?
 age  <- age - 20       # age?
 massIndex <- mass/age  # massIndex?
 ```
+
+Note the use of the pound sign / hashtag / number sign `#`. This is the R symbol for comments. Nothing after this symbol will be evaluated as R script.  This is very useful for when you want to write notes to yourself in plain English (or your language of choice!). 
 
 ## Vectors and data types
 

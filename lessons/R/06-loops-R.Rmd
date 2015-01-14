@@ -4,43 +4,201 @@ title: Loops
 minutes: 60
 ---
 
+## Inflammation Data
 
+The rest of the lessons about functions and analyzing multiple data sets will use a new data set about inflammation. 
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(results='hide')
+Say we are studying inflammation in patients who have been given a new treatment for arthritis, and need to analyze the first dozen data sets.
+
+The files are stored in a .zip file [here](http://emudrak.github.io/2015-01-15-cornell/data/biology/inflammation.zip). Download it into your `/data` directory and unzip it. 
+
+## PAUSE ##
+Make sure everyone has downloaded the zip file. 
+ 
+The data sets are stored in comma-separated values (CSV) format: each row holds information for a single patient, and the columns represent successive days. 
+The first few rows of our first file look like this:
+
+```{r echo = FALSE}
+tmp <- read.csv("../../data/inflammation/inflammation-01.csv", header = FALSE, nrows = 5)
+write.table(tmp, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE)
+rm(tmp)
 ```
-# Analyzing Multiple Data Sets
 
-We have created a function called analyze that creates graphs of the minimum, average, and maximum daily inflammation rates for a single data set:
+For each data set, we want to:
+
+* calculate the average inflammation per day across all patients, and
+* plot the result.
+
+To do all that, we'll have to learn a little bit about programming.  But first, let's make an analysis plan for the first file.
+
+Load the first data file into R using `read.csv`:
+
+```{r, echo=FALSE }
+dat <- read.csv(file="../../data/inflammation/inflammation-01.csv")
+```
+
+
+```{r, results="hide", eval=FALSE}
+dat <- read.csv(file = "inflammation-01.csv", header = FALSE)
+
+head(dat)
+```
+
+#### Challenge
+
+* What class is this data?
+* How many patients (rows) does this data contain?
+* How many days (columns) do we have data for? 
+* What is the inflammation level for patients 30 at day 20? 
+
+
+```{r answers, echo=FALSE}
+class(dat)
+nrow(dat)
+ncol(dat)
+dim(dat)
+dat[30, 20]
+
+```
+
+Now let's perform some common mathematical operations to learn about our inflammation data.
+
+## Challenge
+
+* What is the minimum inflammation on day 7? 
+* What is the mean inflammation on day 12? 
+* What is the maximum inflammation for patient 5
+
+
+```{r, echo=FALSE, results="hide"}
+# minimum inflammation on day 7
+min(dat[, 7])
+# mean inflammation on day 7
+mean(dat[, 12])
+# max inflammation for patient 5
+max(dat[5, ])
+
+```
+
+What if we need the maximum inflammation for all patients, or the average for each day?
+
+To support this, we can use the `apply` function.
+
+`apply` allows us to repeat a function on all of the rows (`MARGIN = 1`) or columns (`MARGIN = 2`) of a data frame.
+
+Thus, to obtain the average inflammation of each patient we will need to calculate the mean of all of the rows (`MARGIN = 1`) of the data frame.
 
 ```{r}
-analyze <- function(filename) {
-	data <- read.csv(filename)
-		
-	avg_day_inflammation <- apply(data, 2, mean)
-	max_day_inflammation <- apply(data, 2, max)
-	min_day_inflammation <- apply(data, 2, min)
+avg_patient_inflammation <- apply(dat, 1, mean)
+```
+
+And to obtain the average inflammation of each day we will need to calculate the mean of all of the columns (`MARGIN = 2`) of the data frame.
+
+```{r}
+avg_day_inflammation <- apply(dat, 2, mean)
+```
+
+Since the second argument to `apply` is `MARGIN`, the above command is equivalent to `apply(dat, MARGIN = 2, mean)`.
+We'll learn why this is so in the next lesson.
+
+> **Tip:** Some common operations have more efficient alternatives.
+For example, you can calculate the row-wise or column-wise means with `rowMeans` and `colMeans`, respectively.
+
+### Plotting
+
+Let's take a look at the average inflammation over time.
+Recall that we already saved them in the variable `avg_day_inflammation`.
+Plotting the values is done with the function `plot`.
+
+```{r plot-avg-inflammation, fig.height=4, fig.width=4}
+plot(avg_day_inflammation)
+plot(avg_day_inflammation, type="l")
+```
+
+Above, we gave the function `plot` a vector of numbers corresponding to the average inflammation per day across all patients.
+`plot` created a scatter plot where the y-axis is the average inflammation level and the x-axis is the order, or index, of the values in the vector, which in this case correspond to the 40 days of treatment.
+
+
+Let's have a look at two other statistics: the maximum and minimum inflammation per day.
+
+```{r plot-max-inflammation, fig.height=4, fig.width=4}
+max_day_inflammation <- apply(dat, 2, max)
+plot(max_day_inflammation, type="l")
+```
+
+```{r plot-min-inflammation, fig.height=4, fig.width=4}
+min_day_inflammation <- apply(dat, 2, min)
+plot(min_day_inflammation, type="l")
+```
+
+
+*Note* you can show all of these plots together by modifying some R graphics parameters.  This is done with the command `par()`.  Look at the help file for this function either by typing it in the search window, or by typing `?par()`.  There are many, many parameters that can be adjusted here.  
+
+```{r, warning=FALSE}
+par(mfrow=c(1,3))
+plot(avg_day_inflammation, type="l")
+plot(max_day_inflammation, type="l")
+plot(min_day_inflammation, type="l")
+par(mfrow=c(1,1)) #reset to original
+```
+
+
+#### Next Steps
+
+We have successfully plotted the avg, max and minimum inflammation per day for the first file.  We would like to do the same for the other 11 the same way, but typing in the same commands repeatedly is tedious and error-prone.
+
+### Challenges
+
+This next challenge has several steps. Think about how you break down a difficult problem into manageable pieces.
+
+1. Write a function called `analyze` that takes a filename as a parameter and displays the 3 graphs you made earlier (average, min and max inflammation over time). i.e., `analyze('data/inflammation-01.csv')` should produce the graphs already shown, while `analyze('inflammation-02.csv')` should produce corresponding graphs for the second data set. Be sure to give your function a docstring.
+
+```{r}
+
+analyze <- function(filename){
+  # x is a file name for a data frame of numbers
+  # This function reads the csv file with inflammation data, calculates the mean, max and min inflmmation values across patients for each day, and then plots it side by side
+  dat <- read.csv(file = filename, header = FALSE)
+  avg_day_inflammation <- apply(dat, 2, mean)
+  max_day_inflammation <- apply(dat, 2, max)
+  min_day_inflammation <- apply(dat, 2, min)
   
   par(mfrow=c(1,3))
   plot(avg_day_inflammation, type="l")
   plot(max_day_inflammation, type="l")
   plot(min_day_inflammation, type="l")
+
 }
+
+
 ```
 
-We can use it to analyze other data sets one by one:
+Try it out: 
 
-```{r, eval=FALSE}
-analyze('data/inflammation-01.csv')
-analyze('data/inflammation-02.csv')
-```
+```{r, fig.height=4 }
 
-```{r echo=FALSE, fig.height=4}
 analyze("../../data/inflammation/inflammation-01.csv")
 analyze("../../data/inflammation/inflammation-02.csv")
+analyze("../../data/inflammation/inflammation-03.csv")
+analyze("../../data/inflammation/inflammation-04.csv")
 ```
 
-But we have a dozen data sets right now and more on the way. We want to create plots for all our data sets with a single statement. To do that, we'll have to teach the computer how to repeat things.
+
+## Next Steps
+
+We now have a function called analyze to visualize a single data set. We could use it to explore all 12 of our current data sets like this:
+
+```{r, eval=FALSE}
+# analyze('data/inflammation-01.csv')
+# analyze('data/inflammation-02.csv')
+# #...
+# analyze('data/inflammation-12.csv')
+```
+
+but the chances of us typing all 12 filenames correctly aren't great, and we'll be even worse off if we get another hundred files. What we need is a way to tell R to do something once for each file, and that will be the subject of the next lesson.
+
+
+# Analyzing Multiple Data Sets
 
 ## Objectives
 
@@ -75,33 +233,13 @@ for (i in 1:10){
 
 ```
 
-Here's another loop that repeatedly updates a variable:
 
-```{r}
-len = 0
-for (vowel in 1:nchar('aeiou')){
-    len = len + 1
-	print(paste('There are', len, 'vowels'))
-}
-```
-
-It's worth tracing the execution of this little program step by step. Since there are five characters in 'aeiou', the `print` statement will be executed five times. The first time around, length is zero (the value assigned to it on line 1) and vowel is 'a'. The statement adds 1 to the old value of length, producing 1, and updates length to refer to that new value. The next time around, vowel is 'e' and length is 1, so length is updated to be 2. After three more updates, length is 5; since there is nothing left in 'aeiou' for R to process, the loop finishes and the `print` statement tells us our final answer.
+It's worth tracing the execution of this little program step by step. Since there are 10 instances in the sequence `1:10`, the indexing variable `i` gets assigned to each of those values in turn. Each time, a variable `sq` is evaluated   The first time around, length is zero (the value assigned to it on line 1) and vowel is 'a'. The statement adds 1 to the old value of length, producing 1, and updates length to refer to that new value. The next time around, vowel is 'e' and length is 1, so length is updated to be 2. After three more updates, length is 5; since there is nothing left in 'aeiou' for R to process, the loop finishes and the `print` statement tells us our final answer.
 
 
 ### Challenges
 
-1. R has a built-in function called `seq` that creates a list of numbers: `seq(3)` produces `[1] 1, 2, 3`, `seq(2, 5)` produces [1] 2, 3, 4, 5, and `seq(2, 10, 3)` produces `[1] 2, 5, 8`. Using `seq`, write a function that prints the _n_ natural numbers:
-	
-```{r}
-print_numbers <- function(N) {
-	nseq <- seq(N)
-	for (i in 1:length(nseq)) {
-		print(nseq[i])
-	}
-}
-```
-
-2. Exponentiation is built into R: `2**4`. Write a function called expo that uses a loop to calculate the same result. Make the form be: `expo(base, power)`
+1. Exponentiation is built into R: `2**4`. Write a function called expo that uses a loop to calculate the same result. Make the form be: `expo(base, power)`
 
 ```{r }
 
@@ -119,7 +257,7 @@ expo <- function(base, power){
 
 # Processing Multiple Files
 
-We now have almost everything we need to process all our data files. 
+We now have almost everything we need to process all our data files. We need a way to be able to specify the collection that the for loop with operate over. 
 
 What we need is a function that finds files whose names match a pattern. We provide those patterns as strings: the character * matches zero or more characters, while ? matches any one character. We can use this to get the names of all the R files we have created so far:
 
@@ -153,7 +291,6 @@ for (f in 1:length(filenames)){
 ```
 
 
-Sure enough, the maxima of these data sets show exactly the same ramp as the first, and their minima show the same staircase structure.
 
 ### Challenges
 

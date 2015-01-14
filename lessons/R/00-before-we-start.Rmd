@@ -17,8 +17,7 @@ knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
 
 # Basics of R
 
-R is a versatile, open source programming/scripting language that's useful both
-for statistics but also data science. Inspired by the programming language S.
+R is a versatile, open source programming/scripting language that's useful for statistics and data science. It is inspired by the programming language S.
 
 * Open source software under GPL. FREE
 * Superior (if not just comparable) to commercial alternatives. R has over 7,000
@@ -51,17 +50,17 @@ _Point out the different windows in R._
         + a list of all the variables, datasets, model outputs ("objects") that you've created *this session only*
         + provides ways to explore the values of these things
     + **History**
-        + A list of all commands executed in the console (without the output)
+        + a list of all commands executed in the console (without the output)
 * Lower Right: (Everything else)
     + **Files**
-        + A view of the project folder- what is available to you?
+        + a view of the project folder- what is available to you?
         + also called the "working directory" - it's where you are working now
     + **Plots**
-        + This is where your plots will show up when you make them
+        + this is where your plots will show up when you make them
     + **Packages**
-        + A list of all the "add on" packages that you can use and which you have loaded for use in this session
+        + a list of all the "add on" packages that you can use and which you have loaded for use in this session
     + **Help**
-        + Where the help will show up.  
+        + where the help will show up.  
         + search from the textbox 
         + get help for a function (e.g. `mean`) by typing `?mean` in the console
     + **Viewer**
@@ -76,7 +75,7 @@ _Point out the different windows in R._
 * Enter a name for this new folder, and choose a convenient location for
   it. This will be your **working directory** for the rest of the day
   (e.g., `~/data-carpentry`)
-* Click on "Create project"
+* Click on "Create Project"
 * Under the `Files` tab on the right of the screen, click on `New Folder` and
   create a folder named `data` within your newly created working directory.
   (e.g., `~/data-carpentry/data`)

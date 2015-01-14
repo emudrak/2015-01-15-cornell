@@ -11,96 +11,7 @@ surveys <- read.csv(file="../../data/biology/surveys.csv")
 
 
 
-> ## Learning Objectives
->
-> * understand the concept of a `data.frame`
-> * know how to access any element or section of a `data.frame`
-> * use sequences
 
-
-
-# Indexing and sequences
-
-```{r, echo=FALSE, purl=TRUE}
-## Indexing and sequences
-```
-
-If we want to extract one or several values from a vector, we must provide one
-or several indices in square brackets, just as we do in math. For instance:
-
-```{r, results='show', purl=FALSE}
-animals <- c("mouse", "rat", "dog", "cat")
-animals[2]
-animals[c(3, 2)]
-animals[2:4]
-more_animals <- animals[c(1:3, 2:4)]
-more_animals
-```
-
-Show everything except a certain index by using the minus sign
-
-```{r, results='show', purl=FALSE}
-animals[-1]
-animals[c(-2,-4)]
-
-```
-
-
-
-
-R indexes start at 1. Programming languages like Fortran, MATLAB, and R start
-counting at 1, because that's what human beings typically do. Languages in the C
-family (including C++, Java, Perl, and Python) count from 0 because that's
-simpler for computers to do.
-
-`:` is a special function that creates numeric vectors of integer in increasing
-or decreasing order, test `1:10` and `10:1` for instance. The function `seq()`
-(for __seq__uence) can be used to create more complex patterns:
-
-```{r, results='show', purl=FALSE}
-seq(1, 10, by=2)
-seq(5, 10, length.out=3)
-seq(50, by=5, length.out=10)
-seq(1, 8, by=3) # sequence stops to stay below upper limit
-```
-
-Our survey data frame has rows and columns (it has 2 dimensions), if we want to
-extract some specific data from it, we need to specify the "coordinates" we want
-from it. Row numbers come first, followed by column numbers.
-
-*If you have not already downloaded the [surveys](http://emudrak.github.io/2015-01-15-cornell/data/biology/surveys.csv) data
-and put it in directory `"data"` within your working directory, please do so now.*
- 
- 
-
-```{r, purl=FALSE}
-surveys[1, 1]   # first element in the first column of the data frame
-surveys[1, 6]   # first element in the 6th column
-surveys[1:3, 7] # first three elements in the 7th column
-surveys[1:3, 4:7] # first three elements in the 4th through 7th columns
-surveys[3, ]    # the 3rd element for all columns
-surveys[, 8]    # the entire 8th column
-```
-
-### Challenge
-
-1. The function `nrow()` on a `data.frame` returns the number of rows. Use it,
-   in conjuction with `seq()` to create a new `data.frame` called
-   `surveys_by_10` that includes every 10th row of the survey data frame
-   starting at row 10 (10, 20, 30, ...)
-
-```{r, echo=FALSE, purl=TRUE}
-### The function `nrow()` on a `data.frame` returns the number of
-### rows. Use it, in conjuction with `seq()` to create a new
-### `data.frame` called `surveys_by_10` that includes every 10th row
-### of the survey data frame starting at row 10 (10, 20, 30, ...)
-```
-
-<!---
-```{r, purl=FALSE}
-surveys_by_10 <- surveys[seq(10, nrow(surveys), by=10), ]
-```
---->
 
 #Manipulating Data
 > ## Learning Objectives
@@ -140,7 +51,14 @@ surveys_DO <- subset(surveys, species == "DO")
 
 `subset()` is a function in "base R" which means that it comes automatically when you install R. Functions in R have a name, and then take arguments in parentheses. Type  `?subset` to call up the help for the subset function. You'll see some examples of useage, and then you'll see a listing of Arguments that `subset()` can take.  
 
-The first argument, `x` is the object to be subsetted, in our case the data frame `surveys`. The second is `subset`, which the help tells us is a logical expression.  We put in here `species=="DO"`, which is a condition that tests for the column `species` to be equal to "DO." The third argument is `select`, which tells the columns to select from the data frame. If we leave it blank, the function will return all columns. 
+The first argument, `x` is the object to be subsetted, in our case the data frame `surveys`. The second is `subset`, which the help tells us is a logical expression.  We put in here `species=="DO"`, which is a condition that tests for the column `species` to be equal to "DO." The third argument is `select`, which tells the columns to select from the data frame. 
+
+```{r, results='show', purl=FALSE}
+DO_weights <- subset(surveys, species == "DO", select=c("sex","wgt"))
+head(DO_weights)
+```
+
+If we leave it blank, the function will return all columns (default).
 
 In R, a test for "equals"" is two equal signs, because we use a single equal sign for assignment sometimes. Here are some other operators that R uses: 
 
@@ -186,23 +104,6 @@ Look at the data set now (use the grid icon in the Environment tab). There is a 
 
 If you assign values to a column that doesn't exist yet, R will create a new column with those values. **Careful:**  If you had typed `surveys$wgt <- log(surveys$wgt)` you would have overwritted the original column. 
 
-
-Look at the data frame structure again: 
-
-```{r}
-str(surveys)
-```
-
-The type for "plot" is integer. But the plots could have been labeled with a lettering scheme rather than numbers.  Here, plot is just a label, and the concept that plot 4 is twice that of plot 2 is false. So we should really make it a factor. 
-
-```{r}
-surveys$plot <- as.factor(surveys$plot)
-```
-
-Look at the structure of `surveys`. Now, plot is a factor with 24 levels. To us, that line of code changed the data type from `int` to `Factor. 
-
-What actually happened was that R evaluated the code on the right of the ` <- ` (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the ` <- `, whcih already existed, so it overwrote the values.  That is ok in this case. 
-
 ## Removing columns
 
 Just like you can select columns by their positions in the `data.frame` or by
@@ -217,7 +118,7 @@ colnames(surveys_noDate)
 ```
 
 The easiest way to remove by name is to use the `subset()` function. This time
-we need to specify explicitly the argument `select` as the default is to subset
+we need to specify explicitly the argument `select`, since the default is to subset
 on rows (as above). The minus sign indicates the names of the columns to remove
 (note that the column names should not be quoted):
 
@@ -237,11 +138,9 @@ surveys_missingRows <- surveys[-c(10, 50:70), ] # removing rows 10, and 50 to 70
 
 
 
-# Building data frames from existing ones (If time) 
+## Building data frames in R 
 
-You can stack data frames next to each other using `cbind()` (__c__olumn __bind__) and on top of each other using `rbind` (__r__ow __bind__).
-
-To illustrate this, let's use some smaller data frames.  You can create data frames directly in R
+You can build a data frame from a series of vectors right in R. 
 
 ```{r}
 
@@ -265,6 +164,7 @@ more_info
 
 ```
 
+You can stack data frames next to each other using `cbind()` (__c__olumn __bind__) and on top of each other using `rbind` (__r__ow __bind__).
 
 With `rbind()` the number of columns and their names must be identical between the two objects:
 ```{r rbind}
