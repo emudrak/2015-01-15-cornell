@@ -16,11 +16,10 @@ root: ../..
 If pwd displays /users/thing, what will ls ../backup display?  
 4. `original pnas_final pnas_sub`
 
-If pwd displays /users/backup, and -r tells ls to display things in reverse order, what command will display:
-pnas-sub/ pnas-final/ original/
-ls -r -F /users/backup
+If pwd displays /users/backup, and -r tells ls to display things in reverse order, what command will display: `pnas-sub/ pnas-final/ original/`  
+`ls -r -F /users/backup`
 
-What does the command cd without a directory name do?
+What does the command cd without a directory name do?  
 3. It changes the working directory to the user’s home directory.
 
 What does the command ls do when used with the -s and -h arguments?
@@ -32,17 +31,17 @@ What does the command ls do when used with the -s and -h arguments?
 
 
 
-What is the output of the closing ls command in the sequence shown below?
-recombine/
+What is the output of the closing ls command in the sequence shown below?  
+`recombine/`
 
-What command(s) could you run so that the commands below will produce the output shown?
-mv fructose.dat analyzed/
-mv sucrose.dat analyzed
+What command(s) could you run so that the commands below will produce the output shown?  
+`mv fructose.dat analyzed/`
+`mv sucrose.dat analyzed`
 
-What does cp do when given several filenames and a directory name, as in:
+What does cp do when given several filenames and a directory name, as in:  
 copies those files into that directory
 
-What does cp do when given three or more filenames, as in:
+What does cp do when given three or more filenames, as in:  
 throws an error
 
 
@@ -51,7 +50,47 @@ throws an error
 
 
 
-If we run sort on this file:
+1. Explain why -n has this effect.  
+-n sorts by numerical string value
+
+2. What is the difference?  
+piping through standard input will not display the name of the file
+
+3. Why do you think `uniq` only removes adjacent duplicated lines? What other command could you combine with it in a pipe to remove all duplicated lines?  
+It would require a large numer of comparisons to compare every line in a file to remove duplicates. You could `sort` and then use `uniq` to remove all duplicated lines. 
+
+4. What text passes through each of the pipes and the final redirect in the pipeline below? 
+~~~ 
+2012-11-06,rabbit
+2012-11-06,deer
+2012-11-05,racoon
+~~~
+
+5. What other command(s) could be added to this in a pipeline to find out what animals the file contains (without any duplicates in their names)?  
+`cut -d , -f 2 animals.txt | sort | uniq`
+
+
+
+### Loops
+
+
+
+1. What is the output:  
+~~~
+fructose.dat glucose.dat sucrose.dat
+fructose.dat glucose.dat sucrose.dat
+fructose.dat glucose.dat sucrose.dat
+~~~
+
+2. What is the effect of this loop:
+1. Prints `fructose.dat`,`glucose.dat`, and `sucrose.dat` to create `xylose.dat`
+
+3. What is the output:
+~~~
+4
+6
+~~~
+
 
 
 ### Command-line programs
