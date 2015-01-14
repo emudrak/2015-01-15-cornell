@@ -13,8 +13,9 @@ knitr::opts_chunk$set(comment=NA, fig.path='img/r-lesson-')
 > * load external data (CSV files) in memory using the survey table
 >  (`surveys.csv`) as an example
 > * understand the concept of a `data.frame`
+> * know how to access any element or section of a `data.frame`
 > * explore the structure and the content of the data in R
-> * understand what are factors and how to manipulate them
+> * understand what factors are and how to manipulate them
 
 
 # Presentation of the Survey Data
@@ -71,23 +72,6 @@ function `head()`:
 head(surveys)
 ```
 
-Let's now check the __str__ucture of this `data.frame` in more details with the
-function `str()`:
-
-```{r, purl=FALSE}
-str(surveys)
-```
-The first line tells us that we have `r nrow(surveys)` observations of `r ncol(surveys)` variables. 
-We also see the data types for each of the columns in our data.frame.  
-You can also see this information in the *Environment tab* if you click the blue arrow button to unfold this information: 
-
-
-![a data.frame in the Environment tab](img/r_data.frame_in_EnvirTab.png)
-
-If you want to view the data, click on the grid icon on the right hand side of the line with `surveys` on it. This will open a new tab in the scripts area. You can scroll around, but you cannot edit. 
-
-*NOTE:* Values that were blank in the CSV are now listed as `NA`. This is what R uses for missing data ("not available").
-
 # What are data frames?
 
 `data.frame` is the _de facto_ data structure for most tabular data and what we
@@ -108,6 +92,34 @@ other words, when importing spreadsheets from your hard drive (or the web).
 
 # Inspecting `data.frame` objects
 
+Let's now check the __str__ucture of this `data.frame` in more details with the
+function `str()`:
+
+```{r, purl=FALSE}
+str(surveys)
+```
+The first line tells us that we have `r nrow(surveys)` observations of `r ncol(surveys)` variables. 
+We also see the data types for each of the columns in our data.frame.  
+You can also see this information in the *Environment tab* if you click the blue arrow button to unfold this information: 
+
+
+![a data.frame in the Environment tab](img/r_data.frame_in_EnvirTab.png)
+
+If you want to view the data, click on the grid icon on the right hand side of the line with `surveys` on it. This will open a new tab in the scripts area. You can scroll around, but you cannot edit. 
+
+*NOTE:* Values that were blank in the CSV are now listed as `NA`. This is what R uses for missing data ("not available").
+
+## The $ operator 
+You'll notice from the `str()` command that every column name is preceded with the `$` symbol. This is the way to access a single column of the data frame. 
+
+For example, you can look at just the species column by typing:  
+
+```{r, eval=FALSE}
+surveys$species
+```
+Note it doesn't print a column, but it prints them out with word wrapping.  The numbers in the brackets at the left serve as an index. 
+
+## Summarizing Functions
 We already saw how the functions `head()` and `str()` can be useful to check the
 content and the structure of a `data.frame`. Here is a non-exhaustive list of
 functions to get a sense of the content/structure of the data.
@@ -145,20 +157,64 @@ Can you answer the following questions??
 * What is the mean weight of animals recorded? 
 
 
+# Indexing and sequences
+
+If we want to extract one or several values from a vector, we must provide one
+or several indices in square brackets. We will start simply with a vector. 
+
+```{r, results='show', purl=FALSE}
+animals <- c("mouse", "rat", "dog", "cat")
+animals[2]
+
+```
+This will print `r animals[2]`, the second value in the vector `animals`. 
 
 
+R indices start at 1. Programming languages like Fortran, MATLAB, and R start
+counting at 1, because that's what human beings typically do. 
 
-As you can see, the columns `species` and `sex` are of a special class called
-`factor`. Before we learn more about the `data.frame` class, we are going to
-talk about factors. They are very useful but not necessarily intuitive, and
-therefore require some attention.
+`:` is a special function that creates numeric vectors of integer in increasing
+or decreasing order, test `1:10` and `10:1` for instance. 
+
+```{r }
+animals[c(3, 2)]
+animals[2:4]
+more_animals <- animals[c(1:3, 2:4)]
+more_animals
+```
+
+Show everything except a certain index by using the minus sign
+
+```{r, results='show', purl=FALSE}
+animals[-1]
+animals[c(-2,-4)]
+
+```
+
+Indexing like this will also work in data frames, but they have two dimensions: rows and columns. If we want to extract some specific data from it, we need to specify the index values for both dimensions. You can think of these as "coordinates". The syntax for this operation uses brackets, but separates it by a comma: `[ row conditions , column conditions]`.  Row numbers come first, followed by column numbers.
+
+*If you have not already downloaded the [surveys](http://emudrak.github.io/2015-01-15-cornell/data/biology/surveys.csv) data
+and put it in directory `"data"` within your working directory, please do so now.*
+
+```{r, purl=FALSE, results='hide'}
+surveys[1, 1]   # first element in the first column of the data frame
+surveys[1, 6]   # first element in the 6th column
+surveys[1:3, 7] # first three elements in the 7th column
+surveys[1:3, 4:7] # first three elements in the 4th through 7th columns
+surveys[3, ]    # the 3rd element for all columns
+surveys[, 8]    # the entire 8th column
+```
+
+Failure to specify anything before or after the comma results in the return of the entire row or column. 
+
 
 
 ## Factors
 
-```{r, echo=FALSE, purl=TRUE}
-### Factors
-```
+
+From the str() command, you can see that the columns `species` and `sex` are of a special class called
+`factor`.  They are very useful but not necessarily intuitive, and
+therefore require some attention.
 
 Factors are used to represent categorical data. Factors can be ordered or
 unordered and are an important class for statistical analysis and for plotting.
@@ -190,7 +246,7 @@ nlevels(sex)
 Sometimes, the order of the factors does not matter, other times you might want
 to specify the order because it is meaningful (e.g., "low", "medium", "high") or
 it is required by particular type of analysis. Additionally, specifying the
-order of the levels allows to compare levels:
+order of the levels allows you to compare levels:
 
 ```{r, purl=TRUE, error=TRUE}
 food <- factor(c("low", "high", "medium", "high", "low", "medium", "high"))
@@ -207,5 +263,24 @@ is low?  You wouldn't be able to tell with just integer data. Factors have this
 information built in. It is particularly helpful when there are many levels
 (like the species in our example data set).
 
+## Converting to factors 
 
+
+Look at the data frame structure again: 
+
+```{r}
+str(surveys)
+```
+
+The type for "plot" is integer. But the plots could have been labeled with a lettering scheme rather than numbers.  There is no concept that plot 4 + plot 2 = plot 6, but right now R thinks that is just fine.  So we should really make it a factor. 
+
+You can convert this variable to a factor with the `as.factor()` command.
+
+```{r}
+surveys$plot <- as.factor(surveys$plot)
+```
+
+Look at the structure of `surveys`. Now, plot is a factor with 24 levels. To us, that line of code changed the data type from `int` to `Factor. 
+
+What actually happened was that R evaluated the code on the right of the ` <- ` (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the ` <- `, whcih already existed, so it overwrote the values.  That is ok in this case. 
 

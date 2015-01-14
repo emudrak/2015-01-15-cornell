@@ -12,7 +12,9 @@ knitr::opts_chunk$set(results='hide', comment=NA)
 # Creating Functions
 
 If we only had one data set to analyze, it would probably be faster to load the file into a spreadsheet and use that to plot some simple statistics. 
-But we have twelve files to check, and may have more in future. In this lesson, we'll learn how to write a function so that we can repeat several operations with a single command.
+But if we have the same type of data in many files, or find that we are doing the same type of analyis over and over again, it may help to automate this. 
+
+In this lesson, we'll learn how to write a function so that we can repeat several operations with a single command.
 
 ## Objectives
 
@@ -23,6 +25,7 @@ But we have twelve files to check, and may have more in future. In this lesson, 
 * Set default values for function parameters.
 * Explain why we should divide programs into small, single-purpose functions.
 * Defining a Function
+
 
 ## Common statistical Problem: 
 Your data is non-normal, and you need to make it normal for statistical analysis. 
@@ -94,7 +97,7 @@ points(nonzerodat[3],log(nonzerodat[3]+add), col="green", pch=16)
 
 ```
 
-That is better, but not orange is now midway between blue and green, but blue should be farther. Add something even smaller- Many people like to add half the smallest non-zero value. 
+That is better, but now orange is now midway between blue and green, but blue should be farther. Add something even smaller- Many people like to add half the smallest non-zero value. 
 
 ```{r, echo=FALSE}
 
@@ -341,7 +344,7 @@ plot(zero3, logw0(zero3))
 
 This is a much cleaner way to work with this way of log-transforming, particularly if we have to do it with a lot of data in our workspace. 
 
-* Note* Look in the environment tab.  There are no intermediate variables `c` and `d`.  R executes the lines inside of the `logw0` function and creates these variables temporarily and stores it in somthing called a `stack frame` taht only exists for the duration of time that R needs to execute the function.  Then it throws those variables away. This is a great way to keep your environment clean and free from all the temporary variables. 
+**Note** Look in the environment tab.  There are no intermediate variables `c` and `d`.  R executes the lines inside of the `logw0` function and creates these variables temporarily and stores it in somthing called a `stack frame` taht only exists for the duration of time that R needs to execute the function.  Then it throws those variables away. This is a great way to keep your environment clean and free from all the temporary variables. 
 
 * Note* This function shows up in the Environment tab, and it is like any object.  Before you use it in an analysis, you have to call it.  Typing the name of the function will print out it's contents, which we just wrote: 
 
@@ -357,73 +360,5 @@ source("LogFunction.R")
 ```
 
 The `source` function will execute all commands in that file quietly, so you don't have to see it working.  
-
-
-### Challenges
-
-This next challenge has several steps. Think about how you break down a difficult problem into manageable pieces.
-
-1. Write a function called `analyze` that takes a filename as a parameter and displays the 3 graphs you made earlier (average, min and max inflammation over time). i.e., `analyze('data/inflammation-01.csv')` should produce the graphs already shown, while `analyze('inflammation-02.csv')` should produce corresponding graphs for the second data set. Be sure to give your function a docstring.
-
-*The files are stored in a .zip file [here](http://emudrak.github.io/2015-01-15-cornell/data/biology/inflammation.zip). Download it into your `/data` directory and unzip it.* 
-
-
-```{r results="hide"}
-dat <- read.csv(file="../../data/inflammation/inflammation-01.csv")
-```
-
-
-
-```{r,  eval=FALSE}
-dat <- read.csv(file = "inflammation-01.csv", header = FALSE)
-
-head(dat)
-
-```
-
-```{r}
-
-analyze <- function(filename){
-  # x is a file name for a data frame of numbers
-  # This function reads the csv file with inflammation data, calculates the mean, max and min inflmmation values across patients for each day, and then plots it side by side
-  dat <- read.csv(file = filename, header = FALSE)
-  avg_day_inflammation <- apply(dat, 2, mean)
-  max_day_inflammation <- apply(dat, 2, max)
-  min_day_inflammation <- apply(dat, 2, min)
-  
-  par(mfrow=c(1,3))
-  plot(avg_day_inflammation, type="l")
-  plot(max_day_inflammation, type="l")
-  plot(min_day_inflammation, type="l")
-
-}
-
-
-```
-
-Try it out: 
-
-
-```{r, fig.height=4 }
-
-analyze("../../data/inflammation/inflammation-01.csv")
-analyze("../../data/inflammation/inflammation-02.csv")
-analyze("../../data/inflammation/inflammation-03.csv")
-analyze("../../data/inflammation/inflammation-04.csv")
-```
-
-
-## Next Steps
-
-We now have a function called analyze to visualize a single data set. We could use it to explore all 12 of our current data sets like this:
-
-```{r, eval=FALSE}
-# analyze('data/inflammation-01.csv')
-# analyze('data/inflammation-02.csv')
-# #...
-# analyze('data/inflammation-12.csv')
-```
-
-but the chances of us typing all 12 filenames correctly aren't great, and we'll be even worse off if we get another hundred files. What we need is a way to tell R to do something once for each file, and that will be the subject of the next lesson.
 
 
