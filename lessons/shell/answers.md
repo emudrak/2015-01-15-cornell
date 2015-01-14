@@ -14,7 +14,7 @@ root: ../..
 
 
 If pwd displays /users/thing, what will ls ../backup display?  
-4. 'original pnas_final pnas_sub'
+4. `original pnas_final pnas_sub`
 
 If pwd displays /users/backup, and -r tells ls to display things in reverse order, what command will display:
 pnas-sub/ pnas-final/ original/
