@@ -5,27 +5,142 @@ date: "Monday, January 12, 2015"
 output: ioslides_presentation
 ---
 
-## R Markdown
+## Common statistical Problem: 
+Your data is non-normal, and you need to make it normal for statistical analysis. 
+Often, people turn to log-transform. 
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r, echo=FALSE, fig.height=6}
+set.seed(25)
+zerodat<-round(rlnorm(50, log(3.5),1.2), 4)-1
+zerodat[zerodat<0]<-0
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+zerodat <- sort(zerodat)
+zerodat
 
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Code and Output
-
-```{r}
-summary(cars)
+par(mfrow=c(2,1), mar=c(5,4,0.5,2))
+hist(zerodat, breaks=10, main=NA)
+hist(log(zerodat), breaks=10, main=NA)
+nonzerodat <- zerodat[zerodat>0]
 ```
 
-## Slide with Plot
+#But, your data has some zeros, which are undefined after a log tranform: 
+ 
+
+```{r, echo=FALSE, results='show'}
+cbind(data=zerodat, logdata=log(zerodat))[1:20,]
+```
+
+#A common solution is to add one to the data. 
 
 ```{r, echo=FALSE}
-plot(cars)
+par(mfrow=c(1,2), mar=c(5,4,0.5,2))
+plot(zerodat,log(zerodat))
+points(nonzerodat[1],log(nonzerodat[1]), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]), col="green", pch=16)
+plot(zerodat,log(zerodat+1))
+points(0,log(1), col="red", pch="*", cex=3)
+points(nonzerodat[1],log(nonzerodat[1]+1), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]+1), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]+1), col="green", pch=16)
 ```
 
+#
+
+
+```{r, echo=FALSE}
+zerodat
+
+```
+
+
+Maybe adding 1 is too much in this case.  
+#Perhaps something smaller?  Try 0.01. 
+```{r, echo=FALSE}
+
+#Maybe adding 1 is too much. Add something smaller?
+add=0.01
+par(mfrow=c(1,2), mar=c(5,4,0.5,2))
+plot(zerodat,log(zerodat), ylim=c(log(min(nonzerodat)), log(max(zerodat)+add)))
+points(nonzerodat[1],log(nonzerodat[1]), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]), col="green", pch=16)
+
+plot(zerodat,log(zerodat+add), ylim=c(log(add), log(max(zerodat)+add)), ylab=paste("log(zerodat) +", add))
+points(0,log(add), col="red", pch="*", cex=3)
+points(nonzerodat[1],log(nonzerodat[1]+add), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]+add), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]+add), col="green", pch=16)
+
+```
+
+# Add something even smaller-  half the smallest non-zero value. 
+
+```{r, echo=FALSE}
+
+add=0.001
+par(mfrow=c(1,2), mar=c(5,4,0.5,2))
+plot(zerodat,log(zerodat), ylim=c(log(min(nonzerodat)), log(max(zerodat)+add)))
+points(nonzerodat[1],log(nonzerodat[1]), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]), col="green", pch=16)
+
+plot(zerodat,log(zerodat+add), ylim=c(log(add), log(max(zerodat)+add)), ylab=paste("log(zerodat) +", add))
+points(0,log(add), col="red", pch="*", cex=3)
+points(nonzerodat[1],log(nonzerodat[1]+add), col="blue", pch=16)
+points(nonzerodat[2],log(nonzerodat[2]+add), col="orange", pch=16)
+points(nonzerodat[3],log(nonzerodat[3]+add), col="green", pch=16)
+```
+
+#How to determine the correct small value to add? 
+
+McCune and Grace 2002 (Chapt 9) suggest this method to figured out a small value that 
+1. Preserves original orders of magnitude in teh data
+1. Results in values of zero when initial value is zero. 
+
+
+Given
+
+  * Min(x) is the smallest nonzero value in the data
+  * Int(x) is a function that truncates x to an integer by dropping digits after the decimal point
+  * c = order of magnitude constant = Int(log(Min(x))
+  * d = decimal constant = log-1 (c) 
+
+then the transformation is $b_{i} = log(x_{i} + d) - c$
+
+# Try it out:  First, get the data that we've been working with. 
+
+```{r}
+
+zerodat<-c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.002899, 0.0419, 
+0.1719, 0.1868, 0.4309, 0.4459, 0.4809, 0.8135, 0.8976, 0.9305, 
+1.0506, 1.7144, 2.2262, 2.2651, 2.303, 2.7367, 2.799, 2.8651, 
+2.9446, 3.2168, 3.2858, 3.7499, 3.9239, 4.0544, 4.148, 4.3406, 
+4.4707, 5.4644, 5.8323, 8.0209, 8.9348, 9.3409, 9.6532, 10.1077, 
+12.8205, 21.3723, 27.0396, 58.9842)
+
+
+c <- floor(log(min(zerodat[zerodat!=0])))
+d <- exp(c)
+transf <- log(zerodat+d) - c
+
+
+
+```
+
+Now let's plot the data to see how it looks: 
+
+
+```{r}
+par(mfrow=c(1,2), mar=c(3,3,3,3))
+plot(zerodat,log(zerodat), ylim=c(log(min(nonzerodat)), log(max(zerodat)+add)))
+points(zerodat[13],log(zerodat[13]), col="blue", pch=16)
+points(zerodat[14],log(zerodat[14]), col="orange", pch=16)
+points(zerodat[15],log(zerodat[15]), col="green", pch=16)
+
+plot(zerodat,transf)
+points(0,transf[1], col="red", pch=8)
+points(zerodat[13],transf[13], col="blue", pch=16)
+points(zerodat[14],transf[14], col="orange", pch=16)
+points(zerodat[15],transf[15], col="green", pch=16)
+```
