@@ -7,7 +7,14 @@ root: ../..
 
 ## Command-Line Programs
 
-The R Console and other interactive tools like RStudio are great for prototyping code and exploring data, but sooner or later we will want to use our program in a pipeline or run it in a shell script to process thousands of data files.
+The R Console and other interactive tools like RStudio are great for prototyping code and exploring data, but sooner or later we will want to use our program in a pipeline or run it in a shell script to process thousands of data files. Why?
+
+1. Save time
+2. Great for on-going data collection
+3. Fewer errors
+4. Record what you've done
+
+
 In order to do that, we need to make our programs work like other Unix command-line tools.
 For example, we may want a program that reads a data set and prints the average inflammation per patient:
 
@@ -317,7 +324,7 @@ main()
   
 
 
-  + Using the function `list.files` introduced in a previous [lesson](03-loops-R.html), write a command-line program that lists all the files in the current directory that contain a specific pattern:
+  + Using the function `list.files` introduced in a previous [lesson](../R/06-loops-R.html), write a command-line program that lists all the files in the current directory that contain a specific pattern:
 
 
 <pre class='in'><code>Rscript find-pattern.R inflammation</code></pre>
@@ -391,7 +398,7 @@ small-03.csv
 </code></pre></div>
 
 Using small data files as input also allows us to check our results more easily: here, for example, we can see that our program is calculating the mean correctly for each line, whereas we were really taking it on faith before.
-This is yet another rule of programming: "[test the simple things first](../../rules.html#test-simple-first)".
+This is yet another rule of programming: "test the simple things first".
 
 We want our program to process each file separately, so we need a loop that executes once for each filename.
 If we specify the files on the command line, the filenames will be returned by `commandArgs(trailingOnly = TRUE)`.

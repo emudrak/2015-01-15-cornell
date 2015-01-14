@@ -469,13 +469,4 @@ so she decides to get some coffee and catch up on her reading.
     done
     ~~~
 
-4.  Describe in words what the following loop does.
-
-    ~~~
-    for how in frog11 prcb redig
-    do
-        $how -limit 0.01 NENE01729B.txt
-    done
-    ~~~
-
 </div>
