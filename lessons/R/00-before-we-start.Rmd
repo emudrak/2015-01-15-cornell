@@ -88,3 +88,4 @@ Your working directory should now look like this:
 
 Note that this is just a convenient way of viewing what is in this folder. Go to your windows browser to see how these mirror each other. 
 
+Next: [Intro to R](01-intro-to-R.html)
