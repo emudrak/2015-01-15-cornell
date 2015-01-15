@@ -1,3 +1,9 @@
+---
+layout: topic
+title: OpenRefine
+minutes: 30
+---
+
 
 # Data Carpentry Open Refine Demo
 
@@ -62,8 +68,8 @@ The data contains quite a few issues, and this tutorial shows how to do things l
 - Finding geographic coordinates for a list of place names (i.e. the names of universities, etc.)
 - Exporting cleaned data to Excel 
 
-*Download the [university data](http://emudrak.github.io/2015-01-15-cornell/data/biology/universityData.csv)
-and put it in directory `"data"` within your working directory.*
+**Download the [university data](http://emudrak.github.io/2015-01-15-cornell/data/biology/universityData.csv)
+and put it in directory "data" within your working directory.**
 
 Start the program. (Double-click on the google-refine.exe file. Java services will start on your machine, and Refine will open in your Firefox browser).
 
@@ -84,13 +90,12 @@ The window shows a preview of the data (showing the 5, 10, 15, etc... first rows
 * Click the down arrow and choose > Facet > Text facet
 * In the left margin, you'll see a box containing every unique, distinct value in the country column and Refine shows you how many times that value occurs in the column (a count), and allows you to sort (order) your facets by name or count.
 * Edit. Note that at any time, in any cell of the Facet box, or data cell in the Refine window, you have access to "edit" and can fix an error immediately. Refine will even ask you if you'd like to make that same correction to every value it finds like that one (or not).
-
 * Find the listing for `Canada B1P 6L2.` Somehow, the postal code must have gotten into this column. Click "edit" to open the window and edit all 576 entries at once. 
 
 ### Cluster Text
 
-* One of the most magical bits of Refine, the moment you realize what you've been missing. Refine has several clustering algorithms built in. Experiment with them, and follow the link inside Refine, to learn more about these algorithms and how they work. https://github.com/OpenRefine/OpenRefine/wiki/Clustering-In-Depth
-* In this example, in the country Text Facet we created in the step above, click the _Cluster_ button.
+This is one of the most magical bits of Refine, the moment you realize what you've been missing. Refine has several clustering algorithms built in. Experiment with them, and follow the link inside Refine, to learn more about these algorithms and how they work. https://github.com/OpenRefine/OpenRefine/wiki/Clustering-In-Depth
+* In the country Text Facet we created in the step above, click the _Cluster_ button.
 * In the resulting pop-up window, you can change the algorithm method, and keying function. Try different combinations to see the difference.
 * For example, with this dataset, the _nearest neighbor_ method with the _PPM_ keying function shows the power of clustering the best. 
 * After corrections are made in this window, you can either Merge and Close the Cluster pop-up, or Merge and Re-cluster.
@@ -99,25 +104,31 @@ The window shows a preview of the data (showing the 5, 10, 15, etc... first rows
 * Locate the `numstudents` column
 * Click the down arrow and choose > Facet > numeric facet.
 * A histogram of values is displayed. You can use the sliders to create a window with which to filter the displayed data. Some of the very largest numbers are suspect, so we will check on them later.
-* There are check boxes below the histogram - use this to filter for non-numeric data. There are a lot of entries with "+" and "~" in them. 
+* There are check boxes below the histogram - use this to filter for non-numeric data. There are a lot of entries with "+" and "~" in them... 
 
 ## Text Transforms
 
-* Under the number of students column, click Edit cells -> Transform
+* Under the `numstudents` column, click Edit cells -> Transform
+
 This allows us to type an expression in one of the languages listed in the pull-down menu. We will use the Google Refine Expression Language [(GREL)](https://github.com/OpenRefine/OpenRefine/wiki/Google-refine-expression-language). 
 Some examples of this are shown below: 
-* Under `numstudents` Enter `value.replace("+", "")` to replace the character `+` with a blank. Click OK. 
+* Enter `value.replace("+", "")` to replace the character `+` with a blank. Click OK. 
 If you find multiple things that need to be replaced, you don't have to keep clicking Edit cells -> Transform for every single issue. You can chain these commands together to fix several issues at once. 
-* Under`numstudents` Enter `value.replace("~", "").replace(",","").replace(" -", "")`
+* Enter `value.replace("~", "").replace(",","").replace(" -", "")`
+
 By now, many cell values are looking more numeric, but are still interpreted as text. Fix that with a "common transform."
 * Under `number of students` Click Edit Cells > Common Transform > To Number. 
+
+If you see entries with strange symbols like "Lumi%C3%A8re University Lyon 2" you can fix this too. 
+* In the `university` column, Transform with this command: `value.unescape('url')`
 
 ## Using Multiple Facets
 It's possible to have multiple facets in use at once. When you do this, each additional facet makes a sub-selection of the data selected by the previous facet. If you find that the number of rows you have selected and are working with is smaller than expected, then check to see if you still have facets in use which are not needed any more.
 
-* Keeping the numStudents numeric facet open, Use the check boxes to display only the non-numeric entries. Add another text facet to see the listing of all these non-numeric entries and edit those.
+* Keeping the `numStudents` numeric facet open, Use the check boxes to display only the non-numeric entries. Add another text facet to see the listing of all these non-numeric entries and edit those. Remove this facet.
 
-* Now remove the numeric facet for numStudents and create a new numeric facet for endowment. Select only the non-numeric values, as was done for the number of students.
+* Create a new numeric facet for `endowment`. Select only the non-numeric values, as was done for the number of students.
+* Create a text facet of `endowment` for the remaining rows. 
 
 Already we see issues like "US$1.3 billion" and "US $186 million" 
 
@@ -135,7 +146,7 @@ The term "billion" is in the values as well, so remove previous facet for endowm
 
 After most of this has been cleaned up, select the non-numeric values, and delete them, just as was done for the numStudents. 
 
-* Also, if you see entries with strange symbols like "Lumi%C3%A8re University Lyon 2" in the "x" column (should be "Lumière University Lyon 2"), you can fix this via Edit cells -> Transform with this command: `value.unescape('url')`
+
 
 For this exercise, we are only interested in seeing how the number of students relate to the other variables. So we remove all the rows that do not have numeric values for the number of students. 
 * Use a numeric facet again on numStudents to select only the non-numeric and blank values. Then do All -> Edit rows -> Remove all matching rows
