@@ -53,7 +53,9 @@ You can find out a lot more about Open Refine at http://openrefine.org and check
 * Works with large-ish datasets (100,000 rows). Does not scale to many millions. (yet).
 
 # Demo of Open Refine
-> This demo is based on one found at [enipedia] (http://enipedia.tudelft.nl/wiki/OpenRefine_Tutorial).  C.B.Davis, A. Chmieliauskas, G.P.J. Dijkema, I. Nikolic (2014), Enipedia, http://enipedia.tudelft.nl, Energy & Industry group, Faculty of Technology, Policy and Management, TU Delft, Delft, The Netherlands. 
+> This demo is based on one found at [enipedia] (http://enipedia.tudelft.nl/wiki/OpenRefine_Tutorial).  See the original page for more in-depth instruction. 
+> C.B.Davis, A. Chmieliauskas, G.P.J. Dijkema, I. Nikolic (2014), Enipedia, http://enipedia.tudelft.nl, Energy & Industry group, Faculty of Technology, Policy and Management, TU Delft, Delft, The Netherlands.
+ 
 
 The example used shows how we can use Wikipedia data to see if there is a relationship between the number of students at a university and the size of the university's endowment.
 
