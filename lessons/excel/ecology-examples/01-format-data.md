@@ -1,6 +1,6 @@
 ---
 title: Formatting data tables in Spreadsheets
-root: ../..
+root: ../../..
 layout: lesson
 ---
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>
