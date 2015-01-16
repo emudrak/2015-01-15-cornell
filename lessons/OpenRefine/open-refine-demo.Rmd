@@ -1,7 +1,8 @@
 ---
-layout: topic
+layout: lesson
 title: Open Refine
 minutes: 60
+root: ../..
 ---
 
 # Data Carpentry Open Refine Demo
