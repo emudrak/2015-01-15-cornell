@@ -15,7 +15,6 @@ surveys <- read.csv(file="../../data/biology/surveys.csv")
 
 #Manipulating Data
 > ## Learning Objectives
->
 > * being able to subset for a level
 > * being able to extract particular values from a `data.frame`
 > * being able to add/remove columns and rows
@@ -206,6 +205,6 @@ cbind(land_animals, more_info)
 
 ```
 
-
+Previous:[Starting with Data](02-starting-with-data.html) Next: [Analyzing and Plotting](04-analyzing-data.html)
 
 

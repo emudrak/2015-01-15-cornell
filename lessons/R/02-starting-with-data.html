@@ -60,6 +60,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <ul>
 <li>load external data (CSV files) in memory using the survey table (<code>surveys.csv</code>) as an example</li>
 <li>understand the concept of a <code>data.frame</code></li>
+<li>know how to access any element or section of a <code>data.frame</code></li>
 <li>explore the structure and the content of the data in R</li>
 <li>understand what factors are and how to manipulate them</li>
 </ul>
@@ -108,7 +109,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>R coerces (when possible) to the data type that is the least common denominator and the easiest to coerce to.</p>
 </div>
 <div id="inspecting-data.frame-objects" class="section level1">
-<h1>Inspecting <code>data.frame</code> objects</h1>
+<h1>Inspecting data.frame objects</h1>
 <p>Let’s now check the <strong>str</strong>ucture of this <code>data.frame</code> in more details with the function <code>str()</code>:</p>
 <pre class="r"><code>str(surveys)</code></pre>
 <pre><code>'data.frame':   35549 obs. of  8 variables:
@@ -163,7 +164,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li>What is the class of the object <code>surveys</code>?</li>
 <li>How many rows and how many columns are in this object?</li>
 <li>How many species have been recorded during these surveys?</li>
-<li>What is the range of years over which theis data has been recorded?</li>
+<li>What is the range of years over which this data has been recorded?</li>
 <li>What is the mean weight of animals recorded?</li>
 </ul>
 </div>
@@ -225,13 +226,23 @@ levels(food)</code></pre>
 </div>
 <div id="converting-to-factors" class="section level2">
 <h2>Converting to factors</h2>
-<p>Sometimes, you’ll find that a categorical variable is interpreted as a number. This is the case for the <code>plot</code> column of the survey data.</p>
-<pre class="r"><code>class(surveys$plot)</code></pre>
-<pre><code>[1] &quot;integer&quot;</code></pre>
-<p>This is problematic because though we labeled plots with numbers, we could have done so with letters, so they should not be treated numerically. There is no concept that plot 4 + plot 2 = plot 6, but right now R thinks that is just fine.</p>
+<p>Look at the data frame structure again:</p>
+<pre class="r"><code>str(surveys)</code></pre>
+<pre><code>'data.frame':   35549 obs. of  8 variables:
+ $ record_id: int  1 2 3 4 5 6 7 8 9 10 ...
+ $ month    : int  7 7 7 7 7 7 7 7 7 7 ...
+ $ day      : int  16 16 16 16 16 16 16 16 16 16 ...
+ $ year     : int  1977 1977 1977 1977 1977 1977 1977 1977 1977 1977 ...
+ $ plot     : int  2 3 2 7 3 1 2 1 1 6 ...
+ $ species  : Factor w/ 49 levels &quot;&quot;,&quot;AB&quot;,&quot;AH&quot;,&quot;AS&quot;,..: 17 17 13 13 13 24 23 13 13 24 ...
+ $ sex      : Factor w/ 6 levels &quot;&quot;,&quot;F&quot;,&quot;M&quot;,&quot;P&quot;,..: 3 3 2 3 3 3 2 3 2 2 ...
+ $ wgt      : int  NA NA NA NA NA NA NA NA NA NA ...</code></pre>
+<p>The type for “plot” is integer. But the plots could have been labeled with a lettering scheme rather than numbers. There is no concept that plot 4 + plot 2 = plot 6, but right now R thinks that is just fine. So we should really make it a factor.</p>
 <p>You can convert this variable to a factor with the <code>as.factor()</code> command.</p>
 <pre class="r"><code>surveys$plot &lt;- as.factor(surveys$plot)</code></pre>
-<p>This command will evaluate <code>as.factor()</code> on the column <code>surveys$plot</code> and copy that results into the column <code>survey$plot</code>, which overwrites it.</p>
+<p>Look at the structure of <code>surveys</code>. Now, plot is a factor with 24 levels. To us, that line of code changed the data type from <code>int</code> to `Factor.</p>
+<p>What actually happened was that R evaluated the code on the right of the <code>&lt;-</code> (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the <code>&lt;-</code>, whcih already existed, so it overwrote the values. That is ok in this case.</p>
+<p>Previous:<a href="01-intro-to-R.html">Intro to R</a> Next: <a href="03-data-frames.html">The data.frame class</a></p>
 </div>
 </div>
 

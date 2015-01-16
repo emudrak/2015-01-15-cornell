@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R"
 minutes: 45
-output: word_document
+output: html_document
 layout: topic
 ---
 
@@ -170,3 +170,5 @@ factors (`factor`).
 
 We are now going to use our "surveys" dataset to explore the `data.frame` data
 structure.
+
+Previous:[Before We Start](00-before-we-start.html) Next: [Starting with Data](02-starting-with-data.html)

@@ -11,7 +11,7 @@ knitr::opts_chunk$set(results='hide', comment=NA)
 ```
 # Creating Functions
 
-If we only had one data set to analyze, it would probably be faster to load the file into a spreadsheet and use that to plot some simple statistics. 
+If we only had one data set to analyze, it might be faster to load the file into a spreadsheet and use that to plot some simple statistics. 
 But if we have the same type of data in many files, or find that we are doing the same type of analyis over and over again, it may help to automate this. 
 
 In this lesson, we'll learn how to write a function so that we can repeat several operations with a single command.
@@ -20,10 +20,6 @@ In this lesson, we'll learn how to write a function so that we can repeat severa
 
 * Define a function that takes parameters.
 * Return a value from a function.
-* Test and debug a function.
-* Explain what a call stack is, and trace changes to the call stack as functions are called.
-* Set default values for function parameters.
-* Explain why we should divide programs into small, single-purpose functions.
 * Defining a Function
 
 
@@ -216,6 +212,16 @@ In the file "DataWithZeros.xlsx" there are several sheets with data that should 
 
 Though you should avoid storing data like this, some researchers receive data this way in such large volumes that it is difficult to "save-as" to .csv files. The following code is provided to show how to work with data in Excel only in these rare circumstances...
 
+It uses a package that doesn't come in base R.  It's called `XLConnect`.  To install it, you can either type in the concole: 
+
+```{r eval=FALSE}
+install.packages("XLConnect")
+```
+
+or you can go to the "Packages" tab and click the "Install Button" and type in the name of the package. Then click Install. 
+
+Once a package has been installed on your computer, you must load it into the memory of the current R Environment with the `library()` command. 
+
 ```{r, message=FALSE}
 library(XLConnect)
 
@@ -360,5 +366,7 @@ source("LogFunction.R")
 ```
 
 The `source` function will execute all commands in that file quietly, so you don't have to see it working.  
+
+Previous:[Analyzing and Plotting](04-analyzing-data.html) Next: [Analyzing multiple datasets](06-loops-R.html)
 
 

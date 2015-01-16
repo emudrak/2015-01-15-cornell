@@ -69,8 +69,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>You can get output from R simply by typing in math in the console</p>
 <pre class="r"><code>3 + 5
 12/7</code></pre>
-<p>However, to do useful and interesting things, we need to save the numbers as something we can remember and use later. This is known as assigning <em>values</em> to <em>objects</em> or <em>variables</em>. To create objects, we need to give it a name followed by the assignment operator <code>&lt;-</code> and the value we want to give it:</p>
+<p>However, to do useful and interesting things, we need to save the numbers as something we can remember and use later. This is known as assigning <em>values</em> to <em>objects</em> or <em>variables</em>. To create an object, we need to give it a name followed by the assignment operator <code>&lt;-</code> and the value we want to give it:</p>
 <pre class="r"><code>weight_kg &lt;- 55</code></pre>
+<p><em>Note</em>: There is a subtle difference between <code>&lt;-</code> and <code>=</code>. Both will work to assign operators, but traditionalists preferr to use <code>&lt;-</code> because <code>=</code> is also use to specify parameters in functions (which we’ll learn about later).</p>
 <p>Objects can be given any name such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. You want your object names to be explicit and not too long. R is case sensitive.</p>
 <p>When assigning a value to an object, R does not print anything. You can force to print the value by using parentheses or by typing the name after you’ve assigned it.</p>
 <pre class="r"><code>(weight_kg &lt;- 55)
@@ -94,6 +95,7 @@ age  &lt;- 122            # age?
 mass &lt;- mass * 2.0     # mass?
 age  &lt;- age - 20       # age?
 massIndex &lt;- mass/age  # massIndex?</code></pre>
+<p>Note the use of the pound sign / hashtag / number sign <code>#</code>. This is the R symbol for comments. Nothing after this symbol will be evaluated as R script. This is very useful for when you want to write notes to yourself in plain English (or your language of choice!).</p>
 </div>
 </div>
 <div id="vectors-and-data-types" class="section level2">
@@ -130,6 +132,7 @@ weights</code></pre>
 </ul>
 <p>Vectors are one of the many <strong>data structures</strong> that R uses. Other important ones are lists (<code>list</code>), matrices (<code>matrix</code>), data frames (<code>data.frame</code>) and factors (<code>factor</code>).</p>
 <p>We are now going to use our “surveys” dataset to explore the <code>data.frame</code> data structure.</p>
+<p>Previous:<a href="00-before-we-start.html">Before We Start</a> Next: <a href="02-starting-with-data.html">Starting with Data</a></p>
 </div>
 
 

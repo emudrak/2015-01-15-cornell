@@ -90,7 +90,7 @@ other words, when importing spreadsheets from your hard drive (or the web).
    denominator and the easiest to coerce to.
 
 
-# Inspecting `data.frame` objects
+# Inspecting data.frame objects
 
 Let's now check the __str__ucture of this `data.frame` in more details with the
 function `str()`:
@@ -153,7 +153,7 @@ Can you answer the following questions??
 * What is the class of the object `surveys`?
 * How many rows and how many columns are in this object?
 * How many species have been recorded during these surveys?
-* What is the range of years over which theis data has been recorded? 
+* What is the range of years over which this data has been recorded? 
 * What is the mean weight of animals recorded? 
 
 
@@ -265,7 +265,6 @@ information built in. It is particularly helpful when there are many levels
 
 ## Converting to factors 
 
-
 Look at the data frame structure again: 
 
 ```{r}
@@ -284,3 +283,4 @@ Look at the structure of `surveys`. Now, plot is a factor with 24 levels. To us,
 
 What actually happened was that R evaluated the code on the right of the ` <- ` (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the ` <- `, whcih already existed, so it overwrote the values.  That is ok in this case. 
 
+Previous:[Intro to R](01-intro-to-R.html) Next: [The data.frame class](03-data-frames.html)

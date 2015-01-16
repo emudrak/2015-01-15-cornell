@@ -125,41 +125,32 @@ surveys_complete &lt;- droplevels(surveys_complete)</code></pre>
 <pre class="r"><code>tapply(surveys_complete$wgt, surveys_complete$species, max)</code></pre>
 <p>If we want to calculate the mean for each plot:</p>
 <pre class="r"><code>tapply(surveys_complete$wgt, surveys_complete$plot, mean)</code></pre>
-<!--- Can we skip this, or do we need to use this later? 
-### Challenge
-
-1. Create new objects to store: the standard deviation, the maximum and minimum
-   values for the weight of each species
-1. How many species do you have these statistics for?
-1. Create a new data frame (called `surveys_summary`) that contains as columns:
-   * `species` the 2 letter code for the species names
-   * `mean_wgt` the mean weight for each species
-   * `sd_wgt` the standard deviation for each species
-   * `min_wgt`  the minimum weight for each species
-   * `max_wgt`  the maximum weight for each species
-
-
-
-**Answers**
-
-
-```r
-species_max <- tapply(surveys_complete$wgt, surveys_complete$species, max)
-species_min <- tapply(surveys_complete$wgt, surveys_complete$species, min)
-species_mean <- tapply(surveys_complete$wgt, surveys_complete$species, min)
-species_sd <- tapply(surveys_complete$wgt, surveys_complete$species, sd)
+<div id="challenge-1" class="section level3">
+<h3>Challenge</h3>
+<ol style="list-style-type: decimal">
+<li>Create new objects to store: the standard deviation, the maximum and minimum values for the weight of each species</li>
+<li>How many species do you have these statistics for?</li>
+<li>Create a new data frame (called <code>surveys_summary</code>) that contains as columns:</li>
+</ol>
+<ul>
+<li><code>species</code> the 2 letter code for the species names</li>
+<li><code>mean_wgt</code> the mean weight for each species</li>
+<li><code>sd_wgt</code> the standard deviation for each species</li>
+<li><code>min_wgt</code> the minimum weight for each species</li>
+<li><code>max_wgt</code> the maximum weight for each species</li>
+</ul>
+<p><strong>Answers</strong></p>
+<pre class="r"><code>species_max &lt;- tapply(surveys_complete$wgt, surveys_complete$species, max)
+species_min &lt;- tapply(surveys_complete$wgt, surveys_complete$species, min)
+species_mean &lt;- tapply(surveys_complete$wgt, surveys_complete$species, min)
+species_sd &lt;- tapply(surveys_complete$wgt, surveys_complete$species, sd)
 nlevels(surveys_complete$species) # or length(species_mean)
-surveys_summary <- data.frame(species=levels(surveys_complete$species),
+surveys_summary &lt;- data.frame(species=levels(surveys_complete$species),
                               mean_wgt=species_mean,
                               sd_wgt=species_sd,
                               min_wgt=species_min,
-                              max_wgt=species_max)
-```
-
-
----> 
-
-
+                              max_wgt=species_max)</code></pre>
+</div>
 </div>
 <div id="creating-a-barplot" class="section level1">
 <h1>Creating a barplot</h1>
@@ -181,7 +172,7 @@ surveys_summary <- data.frame(species=levels(surveys_complete$species),
         col=c(&quot;lavender&quot;, &quot;lightblue&quot;), xlab=&quot;Weight (g)&quot;,
         main=&quot;Mean weight per species&quot;)</code></pre>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwAAAAMACAMAAACkX/C8AAAArlBMVEX9/v0AAAAAADkAAGUAOTkAOWUAOY8AZmUAZo8AZrU5AAA5ADk5AGU5OQA5OTk5OY85ZmU5ZrU5j485j7U5j9plAABlADllAGVlOQBlZgBlZjllZmVlj49ltdpltf2POQCPOTmPOWWPZgCPjzmPj2WPj9qPtY+P2/2t2Oa1ZgC1jzm124+1/rW1/tq1/v3ajznatWXa/rXa/tra/v3m5vr9tWX924/9/rX9/tr9/v0Dlf09AAAAOnRSTlP///////////////////////////////////////////////////////////////////////////8AN8D/CgAAAAlwSFlzAAAdhwAAHYcBj+XxZQAAIABJREFUeJztnWtj4zZ2QKtxdrqaSTLtVs5sd1M5bdq4bBKruy5t6///sYovEHzIJmhcPHjP+ZDIGhGQyHuIBy/IfzgDKOYfYn8BgJggAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANUgAKgGAUA1CACqQQBQDQKAahAAVIMAoBoEANVsRYCnT7uGg3nr1L7z4T7i92p5vn3ri5TVV/34OP9vh9m3U+XtH5sQmxNgb94qNiLA5achgBibE+DmoX2nPgz5C/ByN2jWcgABImAEMDt++k5E1gtQ7BBAks0JYIKlGwJkcig2JEBWbEuA761BQNH+jQDwCtsS4E+3ZhBQtcMf/oIA8DrbEuBfqhHjsX6jCqiP/zMUoB0XD8Op6yqZd8v2r+bT05isQ/LYF9iWX3+D9tOTikbd4ubbHtoXe1PrZfN60Ns1Y+Wu5zj91sfu2w/+bVL5qfnzNKtS13c0kwdORdt7cD/41Ot7fVprLLYlwKEwe7o6KvvSFsBMC9lzpWak0B+iRoD+0+OYKfs3SytG+viaqWgQE9b81ESAYlDrWwKYf+8Daaby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" title alt width="384" /></p>
-<div id="challenge-1" class="section level3">
+<div id="challenge-2" class="section level3">
 <h3>Challenge</h3>
 <ol style="list-style-type: decimal">
 <li>Create a new plot showing the standard deviation for each species. Choose one or more colors from <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">here</a>. (If you prefer, you can also specify colors using their hexadecimal values <code>#RRGGBB</code>.)</li>
@@ -196,6 +187,11 @@ surveys_summary <- data.frame(species=levels(surveys_complete$species),
 example(barplot)</code></pre>
 <p>If you wanted to output this plot to a pdf file rather than to the screen, you can specify where you want the plot to go with the <code>pdf()</code> function. If you wanted it to be a JPG, you would use the function <code>jpeg()</code> (other formats available: svg, png, ps).</p>
 <p>Be sure to add <code>dev.off()</code> at the end to finalize the file. For <code>pdf()</code>, you can create multiple pages to your file, by generating multiple plots before calling <code>dev.off()</code>.</p>
+<pre class="r"><code>jpeg(&quot;mean_per_species.jpg&quot;, height=400, width=500)
+barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1,
+        col=c(&quot;lavender&quot;, &quot;lightblue&quot;), xlab=&quot;Weight (g)&quot;,
+        main=&quot;Mean weight per species&quot;)
+dev.off()</code></pre>
 <pre class="r"><code>pdf(&quot;mean_per_species.pdf&quot;)
 barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1,
         col=c(&quot;lavender&quot;, &quot;lightblue&quot;), xlab=&quot;Weight (g)&quot;,
@@ -215,6 +211,7 @@ dev.off()</code></pre>
 <li>Use <code>apply</code> to calculate statistics across the rows or columns of a data frame.</li>
 <li>Use <code>plot</code> to create simple visualizations.</li>
 </ul>
+<p>Previous:<a href="03-data-frames.html">The data.frame class</a> Next: <a href="05-func-R.html">Writing Functions</a></p>
 </div>
 </div>
 </div>

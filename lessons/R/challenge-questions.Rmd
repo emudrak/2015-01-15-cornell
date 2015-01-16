@@ -1,0 +1,127 @@
+---
+title: "R Challenge Questions"
+author: "Erika Mudrak"
+date: "Thursday, January 15, 2015"
+output: ioslides_presentation
+---
+
+## Challenge - Starting with Data
+
+Can you answer the following questions??
+
+* What is the class of the object `surveys`?
+* How many rows and how many columns are in this object?
+* How many species have been recorded during these surveys?
+* What is the range of years over which this data has been recorded? 
+* What is the mean weight of animals recorded? 
+
+## Challenge - Data Frames
+
+1. Use subset() to print data collected since 1990. 
+2. How many animals were male and of species "PE"?
+3. How many individuals of the species "DM" or "SS"?
+4. What value is returned by `surveys_DO$month[2]` (guess before you execute!)
+
+## Challenge - Analyzing Data
+
+1. To determine the number of elements found in a vector, we can use
+use the function `length()` (e.g., `length(surveys$wgt)`). Using `length()`, how
+many animals have not had their weights recorded?
+
+1. What is the range (minimum and maximum) weight?
+
+1. What is the median weight for the males?
+
+
+## Challenge - Analyzing Data
+
+1. Create new objects to store: the standard deviation, the maximum and minimum
+   values for the weight of each species
+1. How many species do you have these statistics for?
+1. Create a new data frame (called `surveys_summary`) that contains as columns:
+   * `species` the 2 letter code for the species names
+   * `mean_wgt` the mean weight for each species
+   * `sd_wgt` the standard deviation for each species
+   * `min_wgt`  the minimum weight for each species
+   * `max_wgt`  the maximum weight for each species
+   
+
+## Answers - Analyzing Data
+
+```{r, eval=FALSE}
+species_max <- tapply(surveys_complete$wgt, surveys_complete$species, max)
+species_min <- tapply(surveys_complete$wgt, surveys_complete$species, min)
+species_mean <- tapply(surveys_complete$wgt, surveys_complete$species, min)
+
+species_sd <- tapply(surveys_complete$wgt, surveys_complete$species, sd)
+nlevels(surveys_complete$species) # or length(species_mean)
+
+surveys_summary <- data.frame(species=levels(surveys_complete$species),
+                              mean_wgt=species_mean,
+                              sd_wgt=species_sd,
+                              min_wgt=species_min,
+                              max_wgt=species_max)
+```
+
+## Challenge - Inspecting Inflammation Data
+
+* What class is this data?
+* How many patients (rows) does this data contain?
+* How many days (columns) do we have data for? 
+* What is the inflammation level for patients 30 at day 20? 
+
+## Challenge - Inflammation Statistics
+
+* What is the minimum inflammation on day 7? 
+* What is the mean inflammation on day 12? 
+* What is the maximum inflammation for patient 5
+   
+## The Big Challenge...
+
+This next challenge has several steps. Think about how you break down a difficult problem into manageable pieces.
+
+1. Write a function called `analyze` that takes a filename as a parameter and displays the 3 graphs you made earlier (average, min and max inflammation over time). i.e., `analyze('data/inflammation-01.csv')` should produce the graphs already shown, while `analyze('inflammation-02.csv')` should produce corresponding graphs for the second data set. Be sure to give your function a docstring.
+
+## Big Challenge Answer
+```{r, eval=FALSE}
+analyze <- function(filename, imagename){
+  # x is a file name for a data frame of numbers
+  # This function reads the csv file with inflammation data, calculates the mean, max and min inflmmation values across patients for each day, and then plots it side by side, and writes this plot to a jpeg file. 
+  dat <- read.csv(file = filename, header = FALSE)
+  avg_day_inflammation <- apply(dat, 2, mean)
+  max_day_inflammation <- apply(dat, 2, max)
+  min_day_inflammation <- apply(dat, 2, min)
+  
+  jpeg(imagename, height=300, width=600)
+  par(mfrow=c(1,3))
+  plot(avg_day_inflammation, type="l")
+  plot(max_day_inflammation, type="l")
+  plot(min_day_inflammation, type="l")
+  dev.off()
+
+}
+
+
+```
+
+
+
+## Challenge - loops
+
+1. Exponentiation is built into R: `2**4`. Write a function called expo that uses a loop to calculate the same result. Make the form be: `expo(base, power)`
+
+## Answer - loops
+
+
+```{r }
+
+
+expo <- function(base, power){
+  result <- 1
+  for (i in 1:power){
+    result <- result*base
+  }
+  return(result)
+  
+}
+```

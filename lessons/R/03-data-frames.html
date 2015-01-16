@@ -55,64 +55,6 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 
 
-<blockquote>
-<h2>Learning Objectives</h2>
-<ul>
-<li>understand the concept of a <code>data.frame</code></li>
-<li>know how to access any element or section of a <code>data.frame</code></li>
-<li>use sequences</li>
-</ul>
-</blockquote>
-<div id="indexing-and-sequences" class="section level1">
-<h1>Indexing and sequences</h1>
-<p>If we want to extract one or several values from a vector, we must provide one or several indices in square brackets, just as we do in math. For instance:</p>
-<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;, &quot;cat&quot;)
-animals[2]</code></pre>
-<pre><code>## [1] &quot;rat&quot;</code></pre>
-<pre class="r"><code>animals[c(3, 2)]</code></pre>
-<pre><code>## [1] &quot;dog&quot; &quot;rat&quot;</code></pre>
-<pre class="r"><code>animals[2:4]</code></pre>
-<pre><code>## [1] &quot;rat&quot; &quot;dog&quot; &quot;cat&quot;</code></pre>
-<pre class="r"><code>more_animals &lt;- animals[c(1:3, 2:4)]
-more_animals</code></pre>
-<pre><code>## [1] &quot;mouse&quot; &quot;rat&quot;   &quot;dog&quot;   &quot;rat&quot;   &quot;dog&quot;   &quot;cat&quot;</code></pre>
-<p>Show everything except a certain index by using the minus sign</p>
-<pre class="r"><code>animals[-1]</code></pre>
-<pre><code>## [1] &quot;rat&quot; &quot;dog&quot; &quot;cat&quot;</code></pre>
-<pre class="r"><code>animals[c(-2,-4)]</code></pre>
-<pre><code>## [1] &quot;mouse&quot; &quot;dog&quot;</code></pre>
-<p>R indexes start at 1. Programming languages like Fortran, MATLAB, and R start counting at 1, because that’s what human beings typically do. Languages in the C family (including C++, Java, Perl, and Python) count from 0 because that’s simpler for computers to do.</p>
-<p><code>:</code> is a special function that creates numeric vectors of integer in increasing or decreasing order, test <code>1:10</code> and <code>10:1</code> for instance. The function <code>seq()</code> (for <strong>seq</strong>uence) can be used to create more complex patterns:</p>
-<pre class="r"><code>seq(1, 10, by=2)</code></pre>
-<pre><code>## [1] 1 3 5 7 9</code></pre>
-<pre class="r"><code>seq(5, 10, length.out=3)</code></pre>
-<pre><code>## [1]  5.0  7.5 10.0</code></pre>
-<pre class="r"><code>seq(50, by=5, length.out=10)</code></pre>
-<pre><code>##  [1] 50 55 60 65 70 75 80 85 90 95</code></pre>
-<pre class="r"><code>seq(1, 8, by=3) # sequence stops to stay below upper limit</code></pre>
-<pre><code>## [1] 1 4 7</code></pre>
-<p>Our survey data frame has rows and columns (it has 2 dimensions), if we want to extract some specific data from it, we need to specify the “coordinates” we want from it. Row numbers come first, followed by column numbers.</p>
-<p><em>If you have not already downloaded the <a href="http://emudrak.github.io/2015-01-15-cornell/data/biology/surveys.csv">data file</a> and put it in directory <code>&quot;data&quot;</code> within your working directory, please do so now.</em></p>
-<pre class="r"><code>surveys[1, 1]   # first element in the first column of the data frame
-surveys[1, 6]   # first element in the 6th column
-surveys[1:3, 7] # first three elements in the 7th column
-surveys[1:3, 4:7] # first three elements in the 4th through 7th columns
-surveys[3, ]    # the 3rd element for all columns
-surveys[, 8]    # the entire 8th column</code></pre>
-<div id="challenge" class="section level3">
-<h3>Challenge</h3>
-<ol style="list-style-type: decimal">
-<li>The function <code>nrow()</code> on a <code>data.frame</code> returns the number of rows. Use it, in conjuction with <code>seq()</code> to create a new <code>data.frame</code> called <code>surveys_by_10</code> that includes every 10th row of the survey data frame starting at row 10 (10, 20, 30, …)</li>
-</ol>
-<!---
-
-```r
-surveys_by_10 <- surveys[seq(10, nrow(surveys), by=10), ]
-```
---->
-
-</div>
-</div>
 <div id="manipulating-data" class="section level1">
 <h1>Manipulating Data</h1>
 <blockquote>
@@ -133,7 +75,17 @@ surveys_by_10 <- surveys[seq(10, nrow(surveys), by=10), ]
 <p>One way to do this is to select the data we want, and create a new temporary array, using the <code>subset()</code> function. For instance, if we just want to look at the animals of the species “DO”:</p>
 <pre class="r"><code>surveys_DO &lt;- subset(surveys, species == &quot;DO&quot;)</code></pre>
 <p><code>subset()</code> is a function in “base R” which means that it comes automatically when you install R. Functions in R have a name, and then take arguments in parentheses. Type <code>?subset</code> to call up the help for the subset function. You’ll see some examples of useage, and then you’ll see a listing of Arguments that <code>subset()</code> can take.</p>
-<p>The first argument, <code>x</code> is the object to be subsetted, in our case the data frame <code>surveys</code>. The second is <code>subset</code>, which the help tells us is a logical expression. We put in here <code>species==&quot;DO&quot;</code>, which is a condition that tests for the column <code>species</code> to be equal to “DO.” The third argument is <code>select</code>, which tells the columns to select from the data frame. If we leave it blank, the function will return all columns.</p>
+<p>The first argument, <code>x</code> is the object to be subsetted, in our case the data frame <code>surveys</code>. The second is <code>subset</code>, which the help tells us is a logical expression. We put in here <code>species==&quot;DO&quot;</code>, which is a condition that tests for the column <code>species</code> to be equal to “DO.” The third argument is <code>select</code>, which tells the columns to select from the data frame.</p>
+<pre class="r"><code>DO_weights &lt;- subset(surveys, species == &quot;DO&quot;, select=c(&quot;sex&quot;,&quot;wgt&quot;))
+head(DO_weights)</code></pre>
+<pre><code>##     sex wgt
+## 68    F  52
+## 292   F  33
+## 294   F  50
+## 317   F  48
+## 323   F  31
+## 337   F  41</code></pre>
+<p>If we leave it blank, the function will return all columns (default).</p>
 <p>In R, a test for “equals”&quot; is two equal signs, because we use a single equal sign for assignment sometimes. Here are some other operators that R uses:</p>
 <table>
 <thead>
@@ -185,7 +137,7 @@ surveys_by_10 <- surveys[seq(10, nrow(surveys), by=10), ]
 </tr>
 </tbody>
 </table>
-<div id="challenge-1" class="section level3">
+<div id="challenge" class="section level3">
 <h3>Challenge</h3>
 <ol style="list-style-type: decimal">
 <li>Use subset() to print data collected since 1990.</li>
@@ -200,12 +152,6 @@ surveys_by_10 <- surveys[seq(10, nrow(surveys), by=10), ]
 <pre class="r"><code>surveys$logwgt &lt;- log(surveys$wgt)</code></pre>
 <p>Look at the data set now (use the grid icon in the Environment tab). There is a new column, and the values are equal to the log of the values in the wgt column.</p>
 <p>If you assign values to a column that doesn’t exist yet, R will create a new column with those values. <strong>Careful:</strong> If you had typed <code>surveys$wgt &lt;- log(surveys$wgt)</code> you would have overwritted the original column.</p>
-<p>Look at the data frame structure again:</p>
-<pre class="r"><code>str(surveys)</code></pre>
-<p>The type for “plot” is integer. But the plots could have been labeled with a lettering scheme rather than numbers. Here, plot is just a label, and the concept that plot 4 is twice that of plot 2 is false. So we should really make it a factor.</p>
-<pre class="r"><code>surveys$plot &lt;- as.factor(surveys$plot)</code></pre>
-<p>Look at the structure of <code>surveys</code>. Now, plot is a factor with 24 levels. To us, that line of code changed the data type from <code>int</code> to `Factor.</p>
-<p>What actually happened was that R evaluated the code on the right of the <code>&lt;-</code> (in this case, creating factors of the integers in the plot column), and assigned that value to the object on the left of the <code>&lt;-</code>, whcih already existed, so it overwrote the values. That is ok in this case.</p>
 </div>
 <div id="removing-columns" class="section level2">
 <h2>Removing columns</h2>
@@ -217,7 +163,7 @@ colnames(surveys)</code></pre>
 ## [7] &quot;sex&quot;       &quot;wgt&quot;       &quot;logwgt&quot;</code></pre>
 <pre class="r"><code>colnames(surveys_noDate)</code></pre>
 <pre><code>## [1] &quot;record_id&quot; &quot;plot&quot;      &quot;species&quot;   &quot;sex&quot;       &quot;wgt&quot;       &quot;logwgt&quot;</code></pre>
-<p>The easiest way to remove by name is to use the <code>subset()</code> function. This time we need to specify explicitly the argument <code>select</code> as the default is to subset on rows (as above). The minus sign indicates the names of the columns to remove (note that the column names should not be quoted):</p>
+<p>The easiest way to remove by name is to use the <code>subset()</code> function. This time we need to specify explicitly the argument <code>select</code>, since the default is to subset on rows (as above). The minus sign indicates the names of the columns to remove (note that the column names should not be quoted):</p>
 <pre class="r"><code>surveys_noDate2 &lt;- subset(surveys, select=-c(month, day, year))
 colnames(surveys_noDate2)</code></pre>
 <pre><code>## [1] &quot;record_id&quot; &quot;plot&quot;      &quot;species&quot;   &quot;sex&quot;       &quot;wgt&quot;       &quot;logwgt&quot;</code></pre>
@@ -227,11 +173,9 @@ colnames(surveys_noDate2)</code></pre>
 <p>Typically rows are not associated with names, so to remove them from the <code>data.frame</code>, you can do:</p>
 <pre class="r"><code>surveys_missingRows &lt;- surveys[-c(10, 50:70), ] # removing rows 10, and 50 to 70</code></pre>
 </div>
-</div>
-<div id="building-data-frames-from-existing-ones-if-time" class="section level1">
-<h1>Building data frames from existing ones (If time)</h1>
-<p>You can stack data frames next to each other using <code>cbind()</code> (<strong>c</strong>olumn <strong>bind</strong>) and on top of each other using <code>rbind</code> (<strong>r</strong>ow <strong>bind</strong>).</p>
-<p>To illustrate this, let’s use some smaller data frames. You can create data frames directly in R</p>
+<div id="building-data-frames-in-r" class="section level2">
+<h2>Building data frames in R</h2>
+<p>You can build a data frame from a series of vectors right in R.</p>
 <pre class="r"><code>land_animals &lt;- data.frame(animal=c(&quot;dog&quot;, &quot;cat&quot;, &quot;bunny&quot;, &quot;snake&quot;),
                            feel=c(&quot;furry&quot;, &quot;furry&quot;, &quot;fluffy&quot;, &quot;smooth&quot;),
                            weight=c(45, 8, 5.5, 1.2))
@@ -261,6 +205,7 @@ more_info &lt;- data.frame(legs=c(4,4,4,0,0,0,0), eyes=c(2,2,2,2,2,0,0))</code><
 ## 5    0    2
 ## 6    0    0
 ## 7    0    0</code></pre>
+<p>You can stack data frames next to each other using <code>cbind()</code> (<strong>c</strong>olumn <strong>bind</strong>) and on top of each other using <code>rbind</code> (<strong>r</strong>ow <strong>bind</strong>).</p>
 <p>With <code>rbind()</code> the number of columns and their names must be identical between the two objects:</p>
 <pre class="r"><code>all_animals &lt;- rbind(land_animals, sea_animals)
 all_animals</code></pre>
@@ -270,14 +215,16 @@ all_animals</code></pre>
 <p>With <code>cbind()</code> additional columns must have the same number of elements as there are rows in the <code>data.frame</code>.</p>
 <pre class="r"><code>all_animals &lt;- cbind(all_animals, more_info)
 all_animals</code></pre>
-<div id="talk-about-recycling" class="section level4">
-<h4>TALK ABOUT RECYCLING???</h4>
+<div id="recycling" class="section level4">
+<h4>RECYCLING</h4>
 <p><strong>Danger</strong> if you don’t have matching number of rows when doing cbind, R tries to “recycle” if the length of the longer object is a multiple of the shorter one. Here, we try to cbind <code>sea_animals</code> (with 3 elements) with more_info with the first row removed so it has 6 elements. Since 6 is a multiple of 3, R will recycle values in a way to make it “work out:”</p>
 <pre class="r"><code>cbind(sea_animals, more_info[-1,])</code></pre>
 <p>So R wrote out the <code>sea_animals</code> twice to allow all 6 elements of <code>more_info</code> to fit in the data.frame. This could be very bad if you’re not aware of it.</p>
 <p>If the longer object is <em>not</em> a multiple of the shorter one, R will return an error:</p>
 <pre class="r"><code>cbind(land_animals, more_info)</code></pre>
 <pre><code>## Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 4, 7</code></pre>
+<p>Previous:<a href="02-starting-with-data.html">Starting with Data</a> Next: <a href="04-analyzing-data.html">Analyzing and Plotting</a></p>
+</div>
 </div>
 </div>
 

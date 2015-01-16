@@ -1,7 +1,7 @@
 ---
 title: "Analyzing and Plotting Data"
 minutes: 60
-output: word_document
+output: html_document
 layout: topic
 ---
 
@@ -190,7 +190,6 @@ If we want to calculate the mean for each plot:
 tapply(surveys_complete$wgt, surveys_complete$plot, mean)
 ```
 
-<!--- Can we skip this, or do we need to use this later? 
 ### Challenge
 
 1. Create new objects to store: the standard deviation, the maximum and minimum
@@ -202,18 +201,6 @@ tapply(surveys_complete$wgt, surveys_complete$plot, mean)
    * `sd_wgt` the standard deviation for each species
    * `min_wgt`  the minimum weight for each species
    * `max_wgt`  the maximum weight for each species
-
-```{r, echo=FALSE, purl=TRUE}
-## 1. Create new objects to store: the standard deviation, the maximum and minimum
-##    values for the weight of each species
-## 2. How many species do you have these statistics for?
-## 3. Create a new data frame (called `surveys_summary`) that contains as columns:
-##    * `species` the 2 letter code for the species names
-##    * `mean_wgt` the mean weight for each species
-##    * `sd_wgt` the standard deviation for each species
-##    * `min_wgt`  the minimum weight for each species
-##    * `max_wgt`  the maximum weight for each species
-```
 
 **Answers**
 
@@ -231,7 +218,6 @@ surveys_summary <- data.frame(species=levels(surveys_complete$species),
 ```
 
 
----> 
 ```{r, echo=FALSE, purl=TRUE}
 ## Plotting
 ```
@@ -307,6 +293,17 @@ create multiple pages to your file, by generating multiple plots before calling
 `dev.off()`.
 
 
+
+```{r, eval=FALSE, purl=TRUE}
+jpeg("mean_per_species.jpg", height=400, width=500)
+barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1,
+        col=c("lavender", "lightblue"), xlab="Weight (g)",
+        main="Mean weight per species")
+dev.off()
+```
+
+
+
 ```{r, eval=FALSE, purl=TRUE}
 pdf("mean_per_species.pdf")
 barplot(surveys_summary$mean_wgt, horiz=TRUE, las=1,
@@ -329,3 +326,7 @@ dev.off()
 * Use `mean`, `max`, `min` and `sd` to calculate simple statistics.
 * Use `apply` to calculate statistics across the rows or columns of a data frame.
 * Use `plot` to create simple visualizations.
+
+
+Previous:[The data.frame class](03-data-frames.html) Next: [Writing Functions](05-func-R.html)
+

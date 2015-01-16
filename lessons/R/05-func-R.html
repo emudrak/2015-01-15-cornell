@@ -57,17 +57,13 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="creating-functions" class="section level1">
 <h1>Creating Functions</h1>
-<p>If we only had one data set to analyze, it would probably be faster to load the file into a spreadsheet and use that to plot some simple statistics. But if we have the same type of data in many files, or find that we are doing the same type of analyis over and over again, it may help to automate this.</p>
+<p>If we only had one data set to analyze, it might be faster to load the file into a spreadsheet and use that to plot some simple statistics. But if we have the same type of data in many files, or find that we are doing the same type of analyis over and over again, it may help to automate this.</p>
 <p>In this lesson, we’ll learn how to write a function so that we can repeat several operations with a single command.</p>
 <div id="objectives" class="section level2">
 <h2>Objectives</h2>
 <ul>
 <li>Define a function that takes parameters.</li>
 <li>Return a value from a function.</li>
-<li>Test and debug a function.</li>
-<li>Explain what a call stack is, and trace changes to the call stack as functions are called.</li>
-<li>Set default values for function parameters.</li>
-<li>Explain why we should divide programs into small, single-purpose functions.</li>
 <li>Defining a Function</li>
 </ul>
 </div>
@@ -146,6 +142,10 @@ transf &lt;- log(zerodat+d) - c</code></pre>
 <p>So this set of equations should be applicable to any set of numbers that you might want to log-transform.</p>
 <p>In the file “DataWithZeros.xlsx” there are several sheets with data that should be log-transformed but have zeros.</p>
 <p>Though you should avoid storing data like this, some researchers receive data this way in such large volumes that it is difficult to “save-as” to .csv files. The following code is provided to show how to work with data in Excel only in these rare circumstances…</p>
+<p>It uses a package that doesn’t come in base R. It’s called <code>XLConnect</code>. To install it, you can either type in the concole:</p>
+<pre class="r"><code>install.packages(&quot;XLConnect&quot;)</code></pre>
+<p>or you can go to the “Packages” tab and click the “Install Button” and type in the name of the package. Then click Install.</p>
+<p>Once a package has been installed on your computer, you must load it into the memory of the current R Environment with the <code>library()</code> command.</p>
 <pre class="r"><code>library(XLConnect)
 
 DataW0 &lt;- loadWorkbook(&quot;../../data/biology/DataWithZeros.xlsx&quot;)
@@ -278,6 +278,7 @@ zero4 &lt;- readWorksheet(DataW0, sheet=&quot;Sheet4&quot;)$x</code></pre>
 <p>Then at the beginning of a script, we can load this function in a single line with the code</p>
 <pre class="r"><code>source(&quot;LogFunction.R&quot;)</code></pre>
 <p>The <code>source</code> function will execute all commands in that file quietly, so you don’t have to see it working.</p>
+<p>Previous:<a href="04-analyzing-data.html">Analyzing and Plotting</a> Next: <a href="06-loops-R.html">Analyzing multiple datasets</a></p>
 </div>
 
 
