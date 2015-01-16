@@ -53,4 +53,4 @@ Your data sheet might get very long over the course of experiment. This makes it
 [Show an example of how to freeze panes in Excel]
 
 
-Previous: [Introduction](00-intro.md)  Next: [Common formatting mistakes by spreadsheet users.](02-common-mistakes.md)
+Previous: [Introduction](00-intro.html)  Next: [Common formatting mistakes by spreadsheet users.](02-common-mistakes.html)
