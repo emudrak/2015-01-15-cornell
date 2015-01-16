@@ -1,6 +1,6 @@
 ---
 title: Formatting data tables in Spreadsheets
-layout: lesson
+layout: default
 ---
 
 # Formatting data tables in Spreadsheets #

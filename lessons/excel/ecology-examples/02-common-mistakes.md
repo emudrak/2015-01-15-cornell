@@ -1,6 +1,6 @@
 ---
 title: common mistakes by spreadsheet users
-layout: lesson
+layout: default
 ---
 ## Common mistakes by spreadsheet users
 

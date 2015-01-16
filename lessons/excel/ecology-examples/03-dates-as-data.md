@@ -1,6 +1,6 @@
 ---
 title: Dates as data
-layout: lesson
+layout: default
 --- 
 
 ## Dates as data ##

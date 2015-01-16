@@ -1,6 +1,6 @@
 ---
 title: Exporting to CSV
-layout: lesson
+layout: default
 --- 
 
 # Exporting data from spreadsheets #
