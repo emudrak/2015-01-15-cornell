@@ -1,6 +1,6 @@
 ---
 title: Quality Control
-layout: default
+layout: lesson
 --- 
 
 # Basic quality control and data manipulation in spreadsheets #

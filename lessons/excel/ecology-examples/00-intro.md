@@ -1,6 +1,6 @@
 ---
 title: Using spreadsheet programs for scientific data #
-layout: default
+layout: lesson
 ---
 
 # Using spreadsheet programs for scientific data #
