@@ -1,10 +1,8 @@
 ---
 title: Formatting data tables in Spreadsheets
-layout: default
+root: ../../..
+layout: lesson
 ---
-
-# Formatting data tables in Spreadsheets #
-
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>
 Contributors: **Jennifer Bryan**, **Alexander Duryee**, **Jeffrey Hollister**, **Daisie Huang**, **Owen Jones**, and
 **Ben Marwick**

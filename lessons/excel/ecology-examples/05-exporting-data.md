@@ -1,10 +1,8 @@
 ---
-title: Exporting to CSV
-layout: default
+title: Exporting Data from Spreadsheets
+layout: lesson 
+root: ../../..
 --- 
-
-# Exporting data from spreadsheets #
-
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>
 Contributors: **Jennifer Bryan**, **Alexander Duryee**, **Jeffrey Hollister**, **Daisie Huang**, **Owen Jones**, and
 **Ben Marwick**
