@@ -1,6 +1,7 @@
 ---
-title: caveats of popular data formats
-layout: default
+title: Caveats of popular data and file formats
+layout: lesson
+root: ../../..
 --- 
 
 # Caveats of popular data and file formats #

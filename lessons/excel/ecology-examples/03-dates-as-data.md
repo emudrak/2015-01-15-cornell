@@ -1,10 +1,8 @@
 ---
-title: Dates as data
-layout: default
+title: Dates as Data
+layout: lesson 
+root: ../../..
 --- 
-
-## Dates as data ##
-
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>
 Contributors: **Jennifer Bryan**, **Alexander Duryee**, **Jeffrey Hollister**, **Daisie Huang**, **Owen Jones**, and
 **Ben Marwick**
