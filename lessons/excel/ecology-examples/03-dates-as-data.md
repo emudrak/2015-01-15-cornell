@@ -1,3 +1,8 @@
+---
+title: Dates as data
+layout: default
+--- 
+
 ## Dates as data ##
 
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>

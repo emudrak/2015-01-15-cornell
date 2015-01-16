@@ -1,3 +1,7 @@
+---
+title: common mistakes by spreadsheet users
+layout: default
+---
 ## Common mistakes by spreadsheet users
 
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>

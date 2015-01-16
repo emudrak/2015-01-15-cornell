@@ -1,3 +1,8 @@
+---
+title: Using spreadsheet programs for scientific data #
+layout: default
+---
+
 # Using spreadsheet programs for scientific data #
 
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>

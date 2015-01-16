@@ -1,3 +1,8 @@
+---
+title: Quality Control
+layout: default
+--- 
+
 # Basic quality control and data manipulation in spreadsheets #
 
 Authors:**Christie Bahlai**, **Aleksandra Pawlik**<br>
