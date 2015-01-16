@@ -1,5 +1,8 @@
-Databases using SQL
-===================
+---
+title: Databases using SQL
+layout: lesson
+root: ../..
+---
 
 Setup
 -----
