@@ -1,5 +1,6 @@
 ---
 title: Formatting data tables in Spreadsheets
+root: ../..
 layout: default
 ---
 
